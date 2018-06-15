@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
 
 public class TableClienteModel extends AbstractTableModel {
-	ArrayList<Cliente> listaClientes;
-    String[] colunas = {"Nome", "Sobrenome", "RG", "CPF", "Endereco"};
+	private ArrayList<Cliente> listaClientes;
+    private String[] colunas = {"Nome", "Sobrenome", "RG", "CPF", "Endereco"};
       
     public TableClienteModel(){
         this.listaClientes = new ArrayList<>();
@@ -23,6 +23,14 @@ public class TableClienteModel extends AbstractTableModel {
         this.addCliente(c4);
         this.addCliente(c5);
         this.addCliente(c6);
+    }
+    
+    public ArrayList<Cliente> getListaClientes() {
+    	return this.listaClientes;
+    }
+    
+    public String[] getColunas() {
+    	return this.colunas;
     }
     
     public Cliente getCliente(int linha){

@@ -47,17 +47,17 @@ public class TelaManterCliente extends JFrame {
 	}
 	
 	public void renderTable() {
-		Object[][] dados = new Object[this.tableModel.listaClientes.size()][5];
+		Object[][] dados = new Object[this.tableModel.getListaClientes().size()][5];
 		
-		for (int i=0; i < this.tableModel.listaClientes.size(); i++) {
-			dados[i][0] = this.tableModel.listaClientes.get(i).getNome();
-			dados[i][1] = this.tableModel.listaClientes.get(i).getSobrenome();
-			dados[i][2] = this.tableModel.listaClientes.get(i).getRg();
-			dados[i][3] = this.tableModel.listaClientes.get(i).getCpf();
-			dados[i][4] = this.tableModel.listaClientes.get(i).getEndereco();
+		for (int i=0; i < this.tableModel.getListaClientes().size(); i++) {
+			dados[i][0] = this.tableModel.getListaClientes().get(i).getNome();
+			dados[i][1] = this.tableModel.getListaClientes().get(i).getSobrenome();
+			dados[i][2] = this.tableModel.getListaClientes().get(i).getRg();
+			dados[i][3] = this.tableModel.getListaClientes().get(i).getCpf();
+			dados[i][4] = this.tableModel.getListaClientes().get(i).getEndereco();
 		}	
 		
-		table.setModel(new javax.swing.table.DefaultTableModel(dados, this.tableModel.colunas));
+		table.setModel(new javax.swing.table.DefaultTableModel(dados, this.tableModel.getColunas()));
 	}
 	
 	public boolean validaCampos(String campo1, String campo2, String campo3, String campo4, String campo5) {
@@ -76,7 +76,7 @@ public class TelaManterCliente extends JFrame {
 		renderTable();	
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 640, 480);
+		setBounds(100, 100, 600, 460);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -87,62 +87,58 @@ public class TelaManterCliente extends JFrame {
 		contentPane.add(scrollPane);
 		
 		scrollPane.setViewportView(table);
-//		table.addPropertyChangeListener(new PropertyChangeListener() {
-//			public void propertyChange(PropertyChangeEvent ev) {
-//			}
-//		});
 		
 		JLabel title = new JLabel("Clientes");
 		title.setBounds(252, 12, 70, 15);
 		contentPane.add(title);
 		
 		JLabel labelNome = new JLabel("Nome");
-		labelNome.setBounds(20, 270, 70, 15);
+		labelNome.setBounds(20, 300, 70, 15);
 		contentPane.add(labelNome);
 		
 		campoNome = new JTextField();
-		campoNome.setBounds(20, 285, 123, 19);
+		campoNome.setBounds(20, 315, 123, 19);
 		contentPane.add(campoNome);
 		campoNome.setColumns(10);
 		
 		JLabel labelSobrenome = new JLabel("Sobrenome");
-		labelSobrenome.setBounds(155, 270, 123, 15);
+		labelSobrenome.setBounds(155, 300, 123, 15);
 		contentPane.add(labelSobrenome);
 		
 		campoSobrenome = new JTextField();
-		campoSobrenome.setBounds(155, 285, 131, 19);
+		campoSobrenome.setBounds(155, 315, 131, 19);
 		contentPane.add(campoSobrenome);
 		campoSobrenome.setColumns(10);
 		
 		labelRG = new JLabel("RG");
-		labelRG.setBounds(20, 310, 70, 15);
+		labelRG.setBounds(20, 340, 70, 15);
 		contentPane.add(labelRG);
 		
 		campoRG = new JTextField();
-		campoRG.setBounds(20, 325, 123, 19);
+		campoRG.setBounds(20, 355, 123, 19);
 		contentPane.add(campoRG);
 		campoRG.setColumns(10);
 		
 		labelEndereco = new JLabel("Endereço");
-		labelEndereco.setBounds(316, 270, 70, 15);
+		labelEndereco.setBounds(316, 300, 70, 15);
 		contentPane.add(labelEndereco);
 		
 		campoEndereco = new JTextField();
-		campoEndereco.setBounds(316, 285, 250, 19);
+		campoEndereco.setBounds(316, 315, 250, 19);
 		contentPane.add(campoEndereco);
 		campoEndereco.setColumns(10);
 		
 		labelCPF = new JLabel("CPF");
-		labelCPF.setBounds(155, 310, 70, 15);
+		labelCPF.setBounds(155, 340, 70, 15);
 		contentPane.add(labelCPF);
 		
 		campoCPF = new JTextField();
-		campoCPF.setBounds(155, 325, 136, 19);
+		campoCPF.setBounds(155, 355, 136, 19);
 		contentPane.add(campoCPF);
 		campoCPF.setColumns(10);
 		
-		JButton buttonSalvar = new JButton("Salvar");
-		buttonSalvar.addMouseListener(new MouseAdapter() {
+		JButton buttonAdicionar = new JButton("Adicionar");
+		buttonAdicionar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				String nome = campoNome.getText();
@@ -170,11 +166,11 @@ public class TelaManterCliente extends JFrame {
 				}
 			}
 		});
-		buttonSalvar.setBounds(316, 315, 117, 30);
-		contentPane.add(buttonSalvar);
+		buttonAdicionar.setBounds(316, 345, 117, 30);
+		contentPane.add(buttonAdicionar);
 		
 		labelNovoCliente = new JLabel("Novo cliente");
-		labelNovoCliente.setBounds(252, 242, 123, 14);
+		labelNovoCliente.setBounds(252, 272, 123, 14);
 		contentPane.add(labelNovoCliente);
 		
 		labelInvalido = new JLabel("");
@@ -184,7 +180,7 @@ public class TelaManterCliente extends JFrame {
 		JButton buttonSalvarAlteracoes = new JButton("Salvar alterações");
 		buttonSalvarAlteracoes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ev) {
-				tableModel.listaClientes.clear();
+				tableModel.getListaClientes().clear();
 				String nome, sobrenome, rg, cpf, endereco;
 				for (int i=0; i<table.getRowCount(); i++) {
 					nome = (String) table.getValueAt(i, 0);
@@ -193,9 +189,9 @@ public class TelaManterCliente extends JFrame {
 					rg = (String) table.getValueAt(i, 3);
 					endereco = (String) table.getValueAt(i, 4);
 					Cliente c = new Cliente(nome, sobrenome, rg, cpf, endereco);
-					tableModel.listaClientes.add(c);
+					tableModel.addCliente(c);
 				}
-				JOptionPane.showMessageDialog (null, "Altera��es salvas!");
+				JOptionPane.showMessageDialog (null, "Alterações salvas!");
 				renderTable();
 			}
 		});
@@ -210,8 +206,8 @@ public class TelaManterCliente extends JFrame {
 					int dialogResult = JOptionPane.showConfirmDialog (null, "Deseja realmente excluir o registro?","Aviso!", 0);
 					if (dialogResult == 0) {
 						tableModel.removeCliente(linha);
-						JOptionPane.showMessageDialog (null, "Registro removido");
 						renderTable();
+						JOptionPane.showMessageDialog (null, "Registro removido");
 					}
 				} else {
 					JOptionPane.showConfirmDialog (null, "Selecione um registro!", "Aviso!", -1);
