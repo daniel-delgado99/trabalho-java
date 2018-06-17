@@ -14,6 +14,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JComboBox;
 
 
 public class TelaVincularConta extends JFrame {
@@ -21,41 +22,37 @@ public class TelaVincularConta extends JFrame {
 	private JPanel contentPane;
 	private JTable table;
 	private JTextField campoNome;
-	private JTextField campoSobrenome;
-	private JTextField campoRG;
-	private JLabel labelRG;
-	private JLabel labelEndereco;
-	private JTextField campoEndereco;
+	private JLabel labelCampo1;
+	private JTextField campo1;
 	private JLabel labelCPF;
 	private JTextField campoCPF;
 	private JLabel labelNovoCliente;
-	private JLabel labelSalario;
-	private JTextField campoSalario;
 	private TableClienteModel tableModel;
+	private JTextField campo2;
+	private JTextField campo3;
+	private JComboBox<?> comboBox;
+	private Object[][] comboOptions = new Object[][] { {"Conta Corrente", "Conta Investimento"}, {1, 2} };
 	
 	public ArrayList<Cliente> getListaClientes() {
 		return tableModel.getListaClientes();
 	}
 	
 	public void renderTable() {
-		Object[][] dados = new Object[this.getListaClientes().size()][7];
+		Object[][] dados = new Object[this.getListaClientes().size()][3];
+		
 		
 		for (int i=0; i < this.getListaClientes().size(); i++) {
 			dados[i][0] = (int)    this.getListaClientes().get(i).getId();
-			dados[i][1] = (String) this.getListaClientes().get(i).getNome();
-			dados[i][2] = (String) this.getListaClientes().get(i).getSobrenome();
-			dados[i][3] = (String) this.getListaClientes().get(i).getRg();
-			dados[i][4] = (String) this.getListaClientes().get(i).getCpf();
-			dados[i][5] = (String) this.getListaClientes().get(i).getEndereco();
-			dados[i][6] = (double) this.getListaClientes().get(i).getSalario();//String.valueOf(this.tableModel.getListaClientes().get(i).getSalario());
+			dados[i][1] = (String) this.getListaClientes().get(i).getNome() + " " + this.getListaClientes().get(i).getSobrenome();
+			dados[i][2] = (String) this.getListaClientes().get(i).getCpf();
 				
-			for (int j=0; j<7; j++) {
+			for (int j=0; j<3; j++) {
 				tableModel.isCellEditable(i, j);
 				tableModel.getColumnClass(j);
 			}
 		}
 		
-		table.setModel(new javax.swing.table.DefaultTableModel(dados, this.tableModel.getColunas()));
+		table.setModel(new javax.swing.table.DefaultTableModel(dados, this.tableModel.getColunasUneditable()));
 		table.setAutoCreateRowSorter(true);
 	}
 	
@@ -66,19 +63,6 @@ public class TelaVincularConta extends JFrame {
 			return true;
 		}
 	}
-	
-	public double validaSalario(String salarioS) {
-		double salarioD;
-		try {
-			salarioD = Double.parseDouble(salarioS);
-		} catch (NumberFormatException e) {
-			return 0;
-		}
-		return salarioD;
-	}
-	
-	// new Fram1().setVisible(true);
-	// new Fram2().setVisible(true);
 
 	public TelaVincularConta() {
 		this.tableModel = new TableClienteModel();
@@ -87,11 +71,7 @@ public class TelaVincularConta extends JFrame {
 
 			@Override
 			public boolean isCellEditable(int row, int column) {
-			  if (column == 0) {
-				  return false;
-			  } else {
-				  return true;
-			  }
+				return false;
 			}
 		};
 		table.setModel(tableModel);
@@ -106,186 +86,98 @@ public class TelaVincularConta extends JFrame {
 		contentPane.setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(20, 30, 560, 200);
+		scrollPane.setBounds(20, 30, 258, 380);
 		contentPane.add(scrollPane);
 		
 		scrollPane.setViewportView(table);
 		
 		JLabel title = new JLabel("Clientes");
-		title.setBounds(252, 12, 70, 15);
+		title.setBounds(126, 12, 70, 15);
 		contentPane.add(title);
 		
 		JLabel labelNome = new JLabel("Nome");
-		labelNome.setBounds(20, 300, 70, 15);
+		labelNome.setBounds(298, 57, 70, 15);
 		contentPane.add(labelNome);
 		
 		campoNome = new JTextField();
-		campoNome.setBounds(20, 315, 123, 19);
+		campoNome.setBounds(297, 71, 127, 19);
+		campoNome.setEditable(false);
 		contentPane.add(campoNome);
 		campoNome.setColumns(10);
 		
-		JLabel labelSobrenome = new JLabel("Sobrenome");
-		labelSobrenome.setBounds(155, 300, 123, 15);
-		contentPane.add(labelSobrenome);
-		
-		campoSobrenome = new JTextField();
-		campoSobrenome.setBounds(155, 315, 131, 19);
-		contentPane.add(campoSobrenome);
-		campoSobrenome.setColumns(10);
-		
-		labelRG = new JLabel("RG");
-		labelRG.setBounds(20, 340, 70, 15);
-		contentPane.add(labelRG);
-		
-		campoRG = new JTextField();
-		campoRG.setBounds(20, 355, 123, 19);
-		contentPane.add(campoRG);
-		campoRG.setColumns(10);
-		
-		labelEndereco = new JLabel("Endereco");
-		labelEndereco.setBounds(316, 300, 70, 15);
-		contentPane.add(labelEndereco);
-		
-		campoEndereco = new JTextField();
-		campoEndereco.setBounds(316, 315, 250, 19);
-		contentPane.add(campoEndereco);
-		campoEndereco.setColumns(10);
-		
 		labelCPF = new JLabel("CPF");
-		labelCPF.setBounds(155, 340, 70, 15);
+		labelCPF.setBounds(442, 57, 70, 15);
 		contentPane.add(labelCPF);
 		
 		campoCPF = new JTextField();
-		campoCPF.setBounds(155, 355, 136, 19);
+		campoCPF.setBounds(443, 71, 123, 19);
+		campoCPF.setEditable(false);
 		contentPane.add(campoCPF);
 		campoCPF.setColumns(10);
 		
-		labelSalario = new JLabel("Salario");
-		labelSalario.setBounds(316, 340, 70, 15);
-		contentPane.add(labelSalario);
-		
-		campoSalario = new JTextField();
-		campoSalario.setBounds(316, 355, 136, 19);
-		contentPane.add(campoSalario);
-		campoSalario.setColumns(10);
-		
-		
-		JButton buttonAdicionar = new JButton("Adicionar");
-		buttonAdicionar.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent ev) {
-				int id = getListaClientes().get(getListaClientes().size()-1).getId() + 1;
-				String nome = campoNome.getText();
-				String sobrenome = campoSobrenome.getText();
-				String rg = campoRG.getText();
-				String cpf = campoCPF.getText();
-				String endereco = campoEndereco.getText();
-				double salario;
-				
-				try {
-					salario = Double.parseDouble(campoSalario.getText());
-				} catch (NumberFormatException e) {
-					salario = 0;
-				}
-				
-				if (!validaCampos(nome, sobrenome, rg, cpf, endereco)) {
-					JOptionPane.showMessageDialog (contentPane, "Favor preencher todos os campos corretamente!");
-				} else {
-					if (salario <= 0) {
-						JOptionPane.showMessageDialog(contentPane, "Digite um salario valido");
-					}
-					else {
-						Cliente cliente = new Cliente(id, nome, sobrenome, rg, cpf, endereco, salario);
-						tableModel.addCliente(cliente);
-						
-						renderTable();
-						JOptionPane.showMessageDialog (contentPane, "Ciente adicionado!");
-						
-						campoNome.setText("");
-						campoSobrenome.setText("");
-						campoRG.setText("");
-						campoCPF.setText("");
-						campoEndereco.setText("");
-						campoSalario.setText("");
-					}
-				}
-			}
-		});
-		buttonAdicionar.setBounds(465, 345, 100, 30);
-		contentPane.add(buttonAdicionar);
-		
-		labelNovoCliente = new JLabel("Novo cliente");
-		labelNovoCliente.setBounds(252, 272, 123, 14);
+		labelNovoCliente = new JLabel("Criar conta para cliente");
+		labelNovoCliente.setBounds(347, 12, 123, 14);
 		contentPane.add(labelNovoCliente);
 		
-		JButton buttonSalvarAlteracoes = new JButton("Salvar alterações");
+		JButton buttonSalvarAlteracoes = new JButton("Criar conta");
 		buttonSalvarAlteracoes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ev) {
-				int numLinhas = tableModel.getListaClientes().size();
-				String nome, sobrenome, rg, cpf, endereco;
-				double salario;
-				int id;
-				boolean hasInvalidValue=false;
+				System.out.println(comboBox.getSelectedIndex());
+				System.out.println(comboOptions[1][comboBox.getSelectedIndex()]);
 				
-				// loop validar
-				for (int i=0; i<numLinhas; i++) {
-					nome = (String) table.getValueAt(i, 1);
-					sobrenome = (String) table.getValueAt(i, 2);
-					cpf = (String) table.getValueAt(i, 3);
-					rg = (String) table.getValueAt(i, 4);
-					endereco = (String) table.getValueAt(i, 5);
-					salario = (double) table.getValueAt(i, 6);
+				if (comboOptions[1][comboBox.getSelectedIndex()] == (Object) 1) {	
+					System.out.println("Corrente DESUUU");
+				} else if (comboOptions[1][comboBox.getSelectedIndex()] == (Object) 2) {
+					System.out.println("INVESTIMENTOS DESUUU");
+					labelCampo1 = new JLabel("Campo 1");
+					labelCampo1.setBounds(298, 215, 70, 15);
+					contentPane.add(labelCampo1);
 					
-					if (!validaCampos(nome, sobrenome, cpf, rg, endereco) || salario <= 0) {						
-						hasInvalidValue = true;
-						break;
-					}
-				}
-				
-				// loop adicionar
-				if (!hasInvalidValue) {
-					getListaClientes().clear();
-					for (int i=0; i<numLinhas; i++) {
-						id = (int) table.getValueAt(i, 0);
-						nome = (String) table.getValueAt(i, 1);
-						sobrenome = (String) table.getValueAt(i, 2);
-						cpf = (String) table.getValueAt(i, 3);
-						rg = (String) table.getValueAt(i, 4);
-						endereco = (String) table.getValueAt(i, 5);
-						salario = (double) table.getValueAt(i, 6);
-						
-						Cliente c = new Cliente(id, nome, sobrenome, rg, cpf, endereco, salario);
-						tableModel.addCliente(c);
-					}
+					campo1 = new JTextField();
+					campo1.setBounds(295, 229, 250, 19);
+					contentPane.add(campo1);
+					campo1.setColumns(10);
 					
-					renderTable();
-					JOptionPane.showMessageDialog (contentPane, "Alterações salvas!");
-				} else {
-					JOptionPane.showMessageDialog (contentPane, "Alterações invalidas!");
+					JLabel labelCampo2 = new JLabel("Campo 2");
+					labelCampo2.setBounds(298, 259, 70, 15);
+					contentPane.add(labelCampo2);
+					
+					campo2 = new JTextField();
+					campo2.setColumns(10);
+					campo2.setBounds(295, 273, 250, 19);
+					contentPane.add(campo2);
+					
+					JLabel labelCampo3 = new JLabel("Campo 3");
+					labelCampo3.setBounds(298, 307, 70, 15);
+					contentPane.add(labelCampo3);
+					
+					campo3 = new JTextField();
+					campo3.setColumns(10);
+					campo3.setBounds(295, 321, 250, 19);
+					contentPane.add(campo3);
+					
+					contentPane.repaint();
+					
 				}
-				
 			}
 		});
-		buttonSalvarAlteracoes.setBounds(420, 230, 159, 25);
+		buttonSalvarAlteracoes.setBounds(415, 385, 159, 25);
 		contentPane.add(buttonSalvarAlteracoes);
 		
-		JButton buttonExcluir = new JButton("Excluir Registro");
-		buttonExcluir.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				int linha = table.getSelectedRow();
-				if (linha > -1) {
-					int dialogResult = JOptionPane.showConfirmDialog (contentPane, "Deseja realmente excluir o cliente?","Aviso!", 0);
-					if (dialogResult == 0) {
-						tableModel.removeCliente(linha);
-						renderTable();
-						JOptionPane.showMessageDialog (contentPane, "Registro removido");
-					}
-				} else {
-					JOptionPane.showConfirmDialog (contentPane, "Selecione um registro!", "Aviso!", -1);
-				}
-			}
-		});
-		buttonExcluir.setBounds(20, 231, 150, 23);
-		contentPane.add(buttonExcluir);
+		comboBox = new JComboBox<Object>(comboOptions[0]);
+		comboBox.setBounds(298, 167, 159, 22);
+		contentPane.add(comboBox);
+		
+		JLabel labelTipoDeConta = new JLabel("Tipo de conta");
+		labelTipoDeConta.setBounds(298, 149, 100, 14);
+		contentPane.add(labelTipoDeConta);
+		
+		JLabel lblCliente = new JLabel("Cliente");
+		lblCliente.setBounds(298, 31, 70, 15);
+		contentPane.add(lblCliente);
+		
+		JLabel lblConta = new JLabel("Conta");
+		lblConta.setBounds(298, 124, 46, 14);
+		contentPane.add(lblConta);
 	}
 }

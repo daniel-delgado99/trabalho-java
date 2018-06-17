@@ -8,10 +8,11 @@ public class Controller {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					TelaManterCliente frame = new TelaManterCliente();
+					TelaManterCliente telaClientes = new TelaManterCliente();
+					TelaVincularConta telaConta = new TelaVincularConta();
 					//TableToolTipsDemo tela = new TableToolTipsDemo();
-					
-					frame.setVisible(true);
+					telaClientes.setVisible(false);
+					telaConta.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

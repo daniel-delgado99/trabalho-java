@@ -9,8 +9,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JButton;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -55,7 +53,7 @@ public class TelaManterCliente extends JFrame {
 			}
 		}
 		
-		table.setModel(new javax.swing.table.DefaultTableModel(dados, this.tableModel.getColunas()));
+		table.setModel(new javax.swing.table.DefaultTableModel(dados, this.tableModel.getColunasEditable()));
 		table.setAutoCreateRowSorter(true);
 	}
 	
@@ -76,9 +74,6 @@ public class TelaManterCliente extends JFrame {
 		}
 		return salarioD;
 	}
-	
-	// new Fram1().setVisible(true);
-	// new Fram2().setVisible(true);
 
 	public TelaManterCliente() {
 		this.tableModel = new TableClienteModel();
@@ -171,9 +166,9 @@ public class TelaManterCliente extends JFrame {
 		
 		
 		JButton buttonAdicionar = new JButton("Adicionar");
-		buttonAdicionar.addMouseListener(new MouseAdapter() {
+		buttonAdicionar.addActionListener(new ActionListener() {
 			@Override
-			public void mouseClicked(MouseEvent ev) {
+			public void actionPerformed(ActionEvent ev) {
 				int id = getListaClientes().get(getListaClientes().size()-1).getId() + 1;
 				String nome = campoNome.getText();
 				String sobrenome = campoSobrenome.getText();
@@ -222,7 +217,7 @@ public class TelaManterCliente extends JFrame {
 		buttonSalvarAlteracoes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ev) {
 				int numLinhas = tableModel.getListaClientes().size();
-				String nome, sobrenome, rg, cpf, endereco;
+				String nome, sobrenome, rg, cpf, endereco, salarioS;
 				double salario;
 				int id;
 				boolean hasInvalidValue=false;
@@ -234,7 +229,9 @@ public class TelaManterCliente extends JFrame {
 					cpf = (String) table.getValueAt(i, 3);
 					rg = (String) table.getValueAt(i, 4);
 					endereco = (String) table.getValueAt(i, 5);
-					salario = (double) table.getValueAt(i, 6);
+					salarioS = table.getValueAt(i, 6).toString();
+					
+					salario = validaSalario(salarioS);
 					
 					if (!validaCampos(nome, sobrenome, cpf, rg, endereco) || salario <= 0) {						
 						hasInvalidValue = true;
@@ -252,7 +249,9 @@ public class TelaManterCliente extends JFrame {
 						cpf = (String) table.getValueAt(i, 3);
 						rg = (String) table.getValueAt(i, 4);
 						endereco = (String) table.getValueAt(i, 5);
-						salario = (double) table.getValueAt(i, 6);
+						salarioS = table.getValueAt(i, 6).toString();
+						
+						salario = validaSalario(salarioS);
 						
 						Cliente c = new Cliente(id, nome, sobrenome, rg, cpf, endereco, salario);
 						tableModel.addCliente(c);
@@ -287,5 +286,13 @@ public class TelaManterCliente extends JFrame {
 		});
 		buttonExcluir.setBounds(20, 231, 150, 23);
 		contentPane.add(buttonExcluir);
+		
+		JButton btnIrParaContas = new JButton("Ir para contas");
+		btnIrParaContas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnIrParaContas.setBounds(459, 387, 107, 23);
+		contentPane.add(btnIrParaContas);
 	}
 }

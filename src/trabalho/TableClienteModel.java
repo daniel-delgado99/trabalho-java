@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
 
 public class TableClienteModel extends AbstractTableModel {
+	private static final long serialVersionUID = 1L;
 	private ArrayList<Cliente> listaClientes;
-    private String[] colunas = {"#", "Nome", "Sobrenome", "RG", "CPF", "Endereco", "Salario"};
+    private String[] colunasEditable = {"#", "Nome", "Sobrenome", "RG", "CPF", "Endereco", "Salario"};
+    private String[] colunasUneditable = {"#", "Nome", "CPF"};
       
     public TableClienteModel(){
         this.listaClientes = new ArrayList<>();
@@ -41,8 +43,12 @@ public class TableClienteModel extends AbstractTableModel {
     	return this.listaClientes;
     }
     
-    public String[] getColunas() {
-    	return this.colunas;
+    public String[] getColunasEditable() {
+    	return this.colunasEditable;
+    }
+    
+    public String[] getColunasUneditable() {
+    	return this.colunasUneditable;
     }
     
     public Cliente getCliente(int linha){
@@ -66,7 +72,7 @@ public class TableClienteModel extends AbstractTableModel {
     
     @Override
     public int getColumnCount() {
-        return colunas.length;
+        return this.colunasEditable.length;
     }
     
     @Override
@@ -105,7 +111,7 @@ public class TableClienteModel extends AbstractTableModel {
     
     @Override
     public String getColumnName(int coluna) {
-        return this.colunas[coluna];
+        return this.colunasEditable[coluna];
     }
 
 }
