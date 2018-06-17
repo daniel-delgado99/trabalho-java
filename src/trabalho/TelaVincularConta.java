@@ -24,12 +24,14 @@ public class TelaVincularConta extends JFrame {
 	private JTextField campoNome;
 	private JLabel labelCampo1;
 	private JTextField campo1;
+	private JLabel labelCampo2;
+	private JTextField campo2;
+	private JLabel labelCampo3;
+	private JTextField campo3;
 	private JLabel labelCPF;
 	private JTextField campoCPF;
 	private JLabel labelNovoCliente;
 	private TableClienteModel tableModel;
-	private JTextField campo2;
-	private JTextField campo3;
 	private JComboBox<?> comboBox;
 	private Object[][] comboOptions = new Object[][] { {"Conta Corrente", "Conta Investimento"}, {1, 2} };
 	
@@ -37,10 +39,27 @@ public class TelaVincularConta extends JFrame {
 		return tableModel.getListaClientes();
 	}
 	
+	public Cliente getCliente(int i) {
+		return tableModel.getCliente(i);
+	}
+	
+	public ArrayList<Conta> getListaContas() {
+		return tableModel.getListaContas();
+	}
+	
+	public double converteValor (String texto) {
+		double valor;
+		try {
+			valor = Double.parseDouble(texto);
+		} catch (NumberFormatException e) {
+			valor = 0;
+		}
+		
+		return valor;
+	}
+	
 	public void renderTable() {
 		Object[][] dados = new Object[this.getListaClientes().size()][3];
-		
-		
 		for (int i=0; i < this.getListaClientes().size(); i++) {
 			dados[i][0] = (int)    this.getListaClientes().get(i).getId();
 			dados[i][1] = (String) this.getListaClientes().get(i).getNome() + " " + this.getListaClientes().get(i).getSobrenome();
@@ -55,14 +74,6 @@ public class TelaVincularConta extends JFrame {
 		table.setModel(new javax.swing.table.DefaultTableModel(dados, this.tableModel.getColunasUneditable()));
 		table.setAutoCreateRowSorter(true);
 	}
-	
-	public boolean validaCampos(String campo1, String campo2, String campo3, String campo4, String campo5) {
-		if (campo1.equals("") || campo2.equals("") || campo3.equals("") || campo4.equals("") || campo5.equals("")) {
-			return false;
-		} else {
-			return true;
-		}
-	}
 
 	public TelaVincularConta() {
 		this.tableModel = new TableClienteModel();
@@ -74,6 +85,13 @@ public class TelaVincularConta extends JFrame {
 				return false;
 			}
 		};
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				campoNome.setText(getCliente(table.getSelectedRow()).getNome() + " " + getCliente(table.getSelectedRow()).getSobrenome());
+				campoCPF.setText(getCliente(table.getSelectedRow()).getCpf());
+			}
+		});
 		table.setModel(tableModel);
 		
 		renderTable();	
@@ -116,61 +134,162 @@ public class TelaVincularConta extends JFrame {
 		campoCPF.setColumns(10);
 		
 		labelNovoCliente = new JLabel("Criar conta para cliente");
-		labelNovoCliente.setBounds(347, 12, 123, 14);
+		labelNovoCliente.setBounds(370, 12, 165, 14);
 		contentPane.add(labelNovoCliente);
 		
-		JButton buttonSalvarAlteracoes = new JButton("Criar conta");
-		buttonSalvarAlteracoes.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ev) {
-				System.out.println(comboBox.getSelectedIndex());
-				System.out.println(comboOptions[1][comboBox.getSelectedIndex()]);
+		JButton buttonCriar = new JButton("Criar conta");
+		buttonCriar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int linha = table.getSelectedRow();
 				
-				if (comboOptions[1][comboBox.getSelectedIndex()] == (Object) 1) {	
-					System.out.println("Corrente DESUUU");
-				} else if (comboOptions[1][comboBox.getSelectedIndex()] == (Object) 2) {
-					System.out.println("INVESTIMENTOS DESUUU");
-					labelCampo1 = new JLabel("Campo 1");
-					labelCampo1.setBounds(298, 215, 70, 15);
-					contentPane.add(labelCampo1);
-					
-					campo1 = new JTextField();
-					campo1.setBounds(295, 229, 250, 19);
-					contentPane.add(campo1);
-					campo1.setColumns(10);
-					
-					JLabel labelCampo2 = new JLabel("Campo 2");
-					labelCampo2.setBounds(298, 259, 70, 15);
-					contentPane.add(labelCampo2);
-					
-					campo2 = new JTextField();
-					campo2.setColumns(10);
-					campo2.setBounds(295, 273, 250, 19);
-					contentPane.add(campo2);
-					
-					JLabel labelCampo3 = new JLabel("Campo 3");
-					labelCampo3.setBounds(298, 307, 70, 15);
-					contentPane.add(labelCampo3);
-					
-					campo3 = new JTextField();
-					campo3.setColumns(10);
-					campo3.setBounds(295, 321, 250, 19);
-					contentPane.add(campo3);
+				if (linha > -1) {
+					Cliente cliente = getCliente(linha);
+					if (cliente.getConta() == null) {
+						if (comboOptions[1][comboBox.getSelectedIndex()] == (Object) 1) {
+							int numeroConta;
+							if (tableModel.getListaContas().size() == 0) {
+								numeroConta=0;
+							} else {
+								numeroConta = tableModel.getListaContas().get(getListaContas().size()-1).getNumero() + 1;
+							}
+							double depositoInicial, limite;						
+							depositoInicial = converteValor(campo1.getText());
+							limite = converteValor(campo2.getText());
+							
+							if (depositoInicial <= 0 || limite <= 0) {
+								JOptionPane.showMessageDialog (contentPane, "Por favor insira valores válidos");
+							} else {
+								Conta conta = new ContaCorrente(numeroConta, depositoInicial, limite, cliente);
+								conta.deposita(depositoInicial);
+								tableModel.addConta(conta);
+								tableModel.relacionarClienteConta(cliente, conta);
+								
+								campoNome.setText("");
+								campoCPF.setText("");
+								campo1.setText("");
+								campo2.setText("");
+								campo3.setText("");
+								
+								renderTable();
+								
+								JOptionPane.showMessageDialog (contentPane, "Conta salva!");
+								for (int i=0; i<tableModel.getListaContas().size(); i++) {
+									System.out.println(tableModel.getListaContas().get(i).getDono().getNome());
+									System.out.println(tableModel.getListaContas().get(i).getNumero());
+									System.out.println(tableModel.getListaContas().get(i).getSaldo());
+								}
+							}
+						} else if (comboOptions[1][comboBox.getSelectedIndex()] == (Object) 2) {
+							double depositoInicial, montanteMinimo, depositoMinimo;
+							int numeroConta;
+							if (tableModel.getListaContas().size() == 0) {
+								numeroConta=0;
+							} else {
+								numeroConta = tableModel.getListaContas().get(getListaContas().size()-1).getNumero() + 1;
+							}
+							depositoMinimo = converteValor(campo1.getText());
+							montanteMinimo = converteValor(campo2.getText());
+							depositoInicial = converteValor(campo3.getText());
+							
+							
+							if (depositoInicial <= 0 || montanteMinimo <= 0 || depositoMinimo <=0 ) {
+								JOptionPane.showMessageDialog (contentPane, "Por favor insira valores válidos");
+							} else {
+								Conta conta = new ContaInvestimento(numeroConta, montanteMinimo, depositoMinimo, depositoInicial, cliente);
+								tableModel.addConta(conta);
+								tableModel.relacionarClienteConta(cliente, conta);
+								campoNome.setText("");
+								campoCPF.setText("");
+								campo1.setText("");
+								campo2.setText("");
+								campo3.setText("");
+								
+								renderTable();
+								
+								JOptionPane.showMessageDialog (contentPane, "Conta salva!");
+								for (int i=0; i<tableModel.getListaContas().size(); i++) {
+									System.out.println(tableModel.getListaContas().get(i).getDono().getNome());
+									System.out.println(tableModel.getListaContas().get(i).getNumero());
+									System.out.println(tableModel.getListaContas().get(i).getSaldo());
+								}
+							}
+						}
+					} else {
+						JOptionPane.showMessageDialog (contentPane, "Este cliente já possui uma conta");
+					}
+				} else {
+					JOptionPane.showMessageDialog (contentPane, "Selecione um cliente");
+				}				
+			}
+		});
+		buttonCriar.setBounds(415, 385, 159, 25);
+		contentPane.add(buttonCriar);
+		
+		comboBox = new JComboBox<Object>(comboOptions[0]);
+		comboBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ev) {				
+				if (comboOptions[1][comboBox.getSelectedIndex()] == (Object) 1) {
+					campo1.setText("");
+					campo2.setText("");
+					campo3.setText("");
+					labelCampo1.setText("Depósito inicial");
+					labelCampo2.setText("Limite");
+					labelCampo3.setVisible(false);
+					campo3.setVisible(false);
 					
 					contentPane.repaint();
 					
+				} else if (comboOptions[1][comboBox.getSelectedIndex()] == (Object) 2) {
+					campo1.setText("");
+					campo2.setText("");
+					campo3.setText("");
+					labelCampo1.setText("Montante mínimo");
+					labelCampo2.setText("Depósito mínimo");
+					labelCampo3.setVisible(true);
+					campo3.setVisible(true);
+					labelCampo3.setText("Depósito inicial");
+					
+					contentPane.repaint();
 				}
 			}
 		});
-		buttonSalvarAlteracoes.setBounds(415, 385, 159, 25);
-		contentPane.add(buttonSalvarAlteracoes);
-		
-		comboBox = new JComboBox<Object>(comboOptions[0]);
 		comboBox.setBounds(298, 167, 159, 22);
 		contentPane.add(comboBox);
 		
 		JLabel labelTipoDeConta = new JLabel("Tipo de conta");
 		labelTipoDeConta.setBounds(298, 149, 100, 14);
 		contentPane.add(labelTipoDeConta);
+		
+		labelCampo1 = new JLabel("Depósito inicial");
+		labelCampo1.setBounds(298, 215, 110, 15);
+		contentPane.add(labelCampo1);
+		
+		campo1 = new JTextField();
+		campo1.setBounds(295, 229, 250, 19);
+		contentPane.add(campo1);
+		campo1.setColumns(10);
+		
+		labelCampo2 = new JLabel("Limite");
+		labelCampo2.setBounds(298, 259, 110, 15);
+		contentPane.add(labelCampo2);
+		
+		campo2 = new JTextField();
+		campo2.setColumns(10);
+		campo2.setBounds(295, 273, 250, 19);
+		contentPane.add(campo2);
+		
+		labelCampo3 = new JLabel("Depósito inicial");
+		labelCampo3.setBounds(298, 307, 110, 15);
+		labelCampo3.setVisible(false);
+		contentPane.add(labelCampo3);
+		
+		
+		campo3 = new JTextField();
+		campo3.setColumns(10);
+		campo3.setBounds(295, 321, 250, 19);
+		campo3.setVisible(false);
+		contentPane.add(campo3);
+		
 		
 		JLabel lblCliente = new JLabel("Cliente");
 		lblCliente.setBounds(298, 31, 70, 15);

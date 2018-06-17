@@ -6,11 +6,13 @@ import javax.swing.table.AbstractTableModel;
 public class TableClienteModel extends AbstractTableModel {
 	private static final long serialVersionUID = 1L;
 	private ArrayList<Cliente> listaClientes;
+	private ArrayList<Conta> listaContas;
     private String[] colunasEditable = {"#", "Nome", "Sobrenome", "RG", "CPF", "Endereco", "Salario"};
     private String[] colunasUneditable = {"#", "Nome", "CPF"};
       
     public TableClienteModel(){
         this.listaClientes = new ArrayList<>();
+        this.listaContas = new ArrayList<>();
         
         Cliente c1 = new Cliente(1, "Ana", "Monteiro", "12.345.678-9", "123.456.789-00", "Rua A, numero 1", 1100);
         Cliente c2 = new Cliente(2, "João", "da Silva", "12.345.678-9", "123.456.789-00", "Rua B, numero 2", 2000);
@@ -25,6 +27,10 @@ public class TableClienteModel extends AbstractTableModel {
         Cliente c11 = new Cliente(11, "Tadeu", "Souza", "12.345.678-9", "123.456.789-00", "Rua F, numero 6", 5500);
         Cliente c12 = new Cliente(12, "Tadeu", "Souza", "12.345.678-9", "123.456.789-00", "Rua F, numero 6", 6900);
         
+        
+        Conta conta1 = new ContaCorrente(1, 1000, 5000, c1);
+        Conta conta2 = new ContaCorrente(2, 200, 500, c2);
+        
         this.addCliente(c1);
         this.addCliente(c2);
         this.addCliente(c3);
@@ -37,10 +43,20 @@ public class TableClienteModel extends AbstractTableModel {
         this.addCliente(c10);
         this.addCliente(c11);
         this.addCliente(c12);
+        
+        this.addConta(conta1);
+        this.addConta(conta2);
+        
+        this.relacionarClienteConta(c1, conta1);
+        this.relacionarClienteConta(c2, conta2);
     }
     
     public ArrayList<Cliente> getListaClientes() {
     	return this.listaClientes;
+    }
+    
+    public ArrayList<Conta> getListaContas() {
+    	return this.listaContas;
     }
     
     public String[] getColunasEditable() {
@@ -52,17 +68,28 @@ public class TableClienteModel extends AbstractTableModel {
     }
     
     public Cliente getCliente(int linha){
-        return this.listaClientes.get(linha);
+        return getListaClientes().get(linha);
     }
     
     public void addCliente (Cliente cliente) {
     	this.listaClientes.add(cliente);
-    	fireTableDataChanged();
     }
     
     public void removeCliente(int linha) {
     	this.listaClientes.remove(linha);
-    	fireTableDataChanged();
+    }
+    
+    public void addConta (Conta conta) {
+    	this.listaContas.add(conta);
+    }
+    
+    public void removeConta(int linha) {
+    	this.listaContas.remove(linha);
+    }
+    
+    public void relacionarClienteConta(Cliente cliente, Conta conta) {
+    	conta.setDonoConta(cliente);
+    	cliente.setConta(conta);
     }
     
     @Override

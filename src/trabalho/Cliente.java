@@ -8,6 +8,7 @@ public class Cliente {
 	private String rg;
 	private String endereco;
 	private double salario;
+	private Conta conta;
 	
 	public Cliente(int id, String nome, String sobrenome, String cpf, String rg, String endereco, double salario) {
 		super();
@@ -18,6 +19,7 @@ public class Cliente {
 		this.rg = rg;
 		this.endereco = endereco;
 		this.salario = salario;
+		this.conta=null;
 	}
 
 	public int getId() {
@@ -66,5 +68,10 @@ public class Cliente {
 	public void setEndereco(String endereco) {
 		this.endereco = endereco;
 	}
-
+	public Conta getConta() {
+		return this.conta;
+	}
+	public void setConta(Conta conta) {
+		this.conta = conta;
+	}
 }

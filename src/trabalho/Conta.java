@@ -9,8 +9,8 @@ public abstract class Conta implements ContaI {
 	public Conta(int numeroConta, double depositoInicial, Cliente donoConta) {
 		super();
 		this.numeroConta = numeroConta;
-		this.saldoConta = 0;
 		this.depositoInicial = depositoInicial;
+		this.saldoConta = this.depositoInicial;
 		this.donoConta = donoConta;
 	}
 	public int getNumeroConta() {

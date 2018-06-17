@@ -169,7 +169,12 @@ public class TelaManterCliente extends JFrame {
 		buttonAdicionar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent ev) {
-				int id = getListaClientes().get(getListaClientes().size()-1).getId() + 1;
+				int id;
+				if (getListaClientes().size() == 0) {
+					id = 0;
+				} else {
+					id = getListaClientes().get(getListaClientes().size()-1).getId() + 1;
+				}
 				String nome = campoNome.getText();
 				String sobrenome = campoSobrenome.getText();
 				String rg = campoRG.getText();

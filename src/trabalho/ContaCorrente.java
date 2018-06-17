@@ -3,8 +3,9 @@ package trabalho;
 public class ContaCorrente extends Conta {
 	private double limite;
 	
-	public ContaCorrente(int numeroConta, double depositoInicial, Cliente donoConta) {
+	public ContaCorrente(int numeroConta, double depositoInicial, double limite, Cliente donoConta) {
 		super(numeroConta, depositoInicial, donoConta);
+		this.limite = limite;
 	}
 
 	public double getLimite() {
