@@ -1,15 +1,15 @@
 package trabalho;
 
-public abstract class Conta {
+public abstract class Conta implements ContaI {
 	private int numeroConta;
 	private double saldoConta;
 	private double depositoInicial;
 	private Cliente donoConta;
 	
-	public Conta(int numeroConta, double saldoConta, double depositoInicial, Cliente donoConta) {
+	public Conta(int numeroConta, double depositoInicial, Cliente donoConta) {
 		super();
 		this.numeroConta = numeroConta;
-		this.saldoConta = saldoConta;
+		this.saldoConta = 0;
 		this.depositoInicial = depositoInicial;
 		this.donoConta = donoConta;
 	}
@@ -37,6 +37,7 @@ public abstract class Conta {
 	public void setDepositoInicial(double depositoInicial) {
 		this.depositoInicial = depositoInicial;
 	}
+	
 	public boolean deposita (double valor) {
 		if (valor > 0) {
 			double saldoAtual = this.getSaldoConta();
@@ -63,5 +64,21 @@ public abstract class Conta {
 		} else {
 			return false;
 		}
+	}
+	
+	public Cliente getDono() {
+		return this.donoConta;
+	}
+
+	public int getNumero() {
+		return this.numeroConta;
+	}
+
+	public double getSaldo() {
+		return this.saldoConta;
+	}
+
+	public void remunera() {
+		this.saldoConta = this.saldoConta * 1.02;
 	}
 }

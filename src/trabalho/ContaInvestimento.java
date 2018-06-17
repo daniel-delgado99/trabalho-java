@@ -5,7 +5,7 @@ public class ContaInvestimento extends Conta {
 	private double depositoMinimo;
 	
 	public ContaInvestimento(int numeroConta, double saldoConta, double depositoInicial, Cliente donoConta) {
-		super(numeroConta, saldoConta, depositoInicial, donoConta);
+		super(numeroConta, depositoInicial, donoConta);
 	}
 	
 	public double getMontanteMinimo() {

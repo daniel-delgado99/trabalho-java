@@ -16,7 +16,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 
-public class TelaManterCliente extends JFrame {
+public class TelaVincularConta extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTable table;
@@ -80,7 +80,7 @@ public class TelaManterCliente extends JFrame {
 	// new Fram1().setVisible(true);
 	// new Fram2().setVisible(true);
 
-	public TelaManterCliente() {
+	public TelaVincularConta() {
 		this.tableModel = new TableClienteModel();
 		table = new JTable() {
 			private static final long serialVersionUID = 1L;

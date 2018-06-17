@@ -1,20 +1,41 @@
 package trabalho;
 
 public class Cliente {
+	private int id;
 	private String nome;
 	private String sobrenome;
 	private String cpf;
 	private String rg;
 	private String endereco;
+	private double salario;
 	
-	public Cliente(String nome, String sobrenome, String cpf, String rg, String endereco) {
+	public Cliente(int id, String nome, String sobrenome, String cpf, String rg, String endereco, double salario) {
 		super();
+		this.id = id;
 		this.nome = nome;
 		this.sobrenome = sobrenome;
 		this.cpf = cpf;
 		this.rg = rg;
 		this.endereco = endereco;
+		this.salario = salario;
 	}
+
+	public int getId() {
+		return this.id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public double getSalario() {
+		return this.salario;
+	}
+
+	public void setSalario(double salario) {
+		this.salario = salario;
+	}
+
 	public String getNome() {
 		return nome;
 	}
