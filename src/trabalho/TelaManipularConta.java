@@ -27,7 +27,6 @@ public class TelaManipularConta extends JFrame {
 	private JLabel labelCPF;
 	private JTextField campoCPF;
 	private JLabel labelNovoCliente;
-	private TableClienteModel tableModel;
 	private JLabel labelNumeroConta;
 	private JLabel lblSaldo;
 	private JLabel label1;
@@ -37,15 +36,15 @@ public class TelaManipularConta extends JFrame {
 	private JButton buttonIrParaContas;
 	
 	public ArrayList<Cliente> getListaClientes() {
-		return tableModel.getListaClientes();
+		return Controller.tableModel.getListaClientes();
 	}
 	
 	public Cliente getCliente(int i) {
-		return tableModel.getCliente(i);
+		return Controller.tableModel.getCliente(i);
 	}
 	
 	public ArrayList<Conta> getListaContas() {
-		return tableModel.getListaContas();
+		return Controller.tableModel.getListaContas();
 	}
 	
 	public double converteValor (String texto) {
@@ -67,16 +66,15 @@ public class TelaManipularConta extends JFrame {
 			dados[i][2] = (String) this.getListaContas().get(i).getDono().getCpf();
 				
 			for (int j=0; j<3; j++) {
-				tableModel.isCellEditable(i, j);
+				Controller.tableModel.isCellEditable(i, j);
 			}
 		}
 		
-		table.setModel(new javax.swing.table.DefaultTableModel(dados, this.tableModel.getColunasUneditable()));
+		table.setModel(new javax.swing.table.DefaultTableModel(dados, Controller.tableModel.getColunasUneditable()));
 		table.setAutoCreateRowSorter(true);
 	}
 
 	public TelaManipularConta() {
-		this.tableModel = new TableClienteModel();
 		table = new JTable() {
 			private static final long serialVersionUID = 1L;
 
@@ -106,7 +104,7 @@ public class TelaManipularConta extends JFrame {
 				}
 			}
 		});
-		table.setModel(tableModel);
+		table.setModel(Controller.tableModel);
 		
 		renderTable();	
 
@@ -208,10 +206,10 @@ public class TelaManipularConta extends JFrame {
 							JOptionPane.showMessageDialog (contentPane, "Saque realizado");
 							campoSaque.setText("");
 						} else {
-							JOptionPane.showMessageDialog (contentPane, "Não foi possível realizar o saque");
+							JOptionPane.showMessageDialog (contentPane, "Nï¿½o foi possï¿½vel realizar o saque");
 						}
 					} else {
-						JOptionPane.showMessageDialog (contentPane, "Insira um valor válido!");
+						JOptionPane.showMessageDialog (contentPane, "Insira um valor vï¿½lido!");
 					}
 				} else {
 					JOptionPane.showMessageDialog (contentPane, "Selecione uma conta!");
@@ -229,13 +227,13 @@ public class TelaManipularConta extends JFrame {
 					if (valor > 0) {
 						if (getCliente(table.getSelectedRow()).getConta().deposita(valor)) {
 							lblSaldo.setText("Saldo: " + getCliente(table.getSelectedRow()).getConta().getSaldo());
-							JOptionPane.showMessageDialog (contentPane, "Depósito realizado");
+							JOptionPane.showMessageDialog (contentPane, "Depï¿½sito realizado");
 							campoDeposito.setText("");
 						} else {
-							JOptionPane.showMessageDialog (contentPane, "Favor depositar mais que o valor mínimo");
+							JOptionPane.showMessageDialog (contentPane, "Favor depositar mais que o valor mï¿½nimo");
 						}
 					} else {
-						JOptionPane.showMessageDialog (contentPane, "Insira um valor válido!");
+						JOptionPane.showMessageDialog (contentPane, "Insira um valor vï¿½lido!");
 					}
 				} else {
 					JOptionPane.showMessageDialog (contentPane, "Selecione uma conta!");
@@ -269,6 +267,7 @@ public class TelaManipularConta extends JFrame {
 		buttonIrParaClientes = new JButton("Ir para clientes");
 		buttonIrParaClientes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				Controller.closeTelaManipularConta();
 				Controller.openTelaClientes();
 			}
 		});
@@ -278,6 +277,7 @@ public class TelaManipularConta extends JFrame {
 		buttonIrParaContas = new JButton("Ir para contas");
 		buttonIrParaContas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				Controller.closeTelaManipularConta();
 				Controller.openTelaContas();
 			}
 		});

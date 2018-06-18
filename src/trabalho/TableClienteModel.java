@@ -15,7 +15,7 @@ public class TableClienteModel extends AbstractTableModel {
         this.listaContas = new ArrayList<>();
         
         Cliente c1 = new Cliente(1, "Ana", "Monteiro", "12.345.678-9", "123.456.789-00", "Rua A, numero 1", 1100);
-        Cliente c2 = new Cliente(2, "João", "da Silva", "12.345.678-9", "123.456.789-00", "Rua B, numero 2", 2000);
+        Cliente c2 = new Cliente(2, "Joï¿½o", "da Silva", "12.345.678-9", "123.456.789-00", "Rua B, numero 2", 2000);
         Cliente c3 = new Cliente(3, "Pedro", "Santos", "12.345.678-9", "123.456.789-00", "Rua C, numero 3", 2500);
         Cliente c4 = new Cliente(4, "Maria", "Pereira", "12.345.678-9", "123.456.789-00", "Rua D, numero 4", 4500);
         Cliente c5 = new Cliente(5, "Carlos", "Oliveira", "12.345.678-9", "123.456.789-00", "Rua E, numero 5", 8000);
@@ -26,7 +26,6 @@ public class TableClienteModel extends AbstractTableModel {
         Cliente c10 = new Cliente(10, "Tadeu", "Souza", "12.345.678-9", "123.456.789-00", "Rua F, numero 6", 1500);
         Cliente c11 = new Cliente(11, "Tadeu", "Souza", "12.345.678-9", "123.456.789-00", "Rua F, numero 6", 5500);
         Cliente c12 = new Cliente(12, "Tadeu", "Souza", "12.345.678-9", "123.456.789-00", "Rua F, numero 6", 6900);
-        
         
         Conta conta1 = new ContaCorrente(1, 1000, 5000, c1);
         Conta conta2 = new ContaCorrente(2, 200, 500, c2);

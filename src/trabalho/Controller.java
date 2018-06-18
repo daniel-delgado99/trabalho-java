@@ -6,20 +6,14 @@ public class Controller {
 	static TelaManterCliente telaClientes;
 	static TelaVincularConta telaContas;
 	static TelaManipularConta telaManipularConta;
+	static TableClienteModel tableModel;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					telaClientes = new TelaManterCliente();
-					telaContas = new TelaVincularConta();
-					telaManipularConta = new TelaManipularConta();
+					tableModel = new TableClienteModel();
 					openTelaClientes();
-					
-					//TableToolTipsDemo tela = new TableToolTipsDemo();
-					//telaClientes.setVisible(false);
-					//telaContas.setVisible(false);
-					//telaManipularConta.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -28,27 +22,33 @@ public class Controller {
 	}
 	
 	public static void openTelaClientes() {
+		telaClientes = new TelaManterCliente();
 		telaClientes.setVisible(true);
-		telaContas.setVisible(false);
-		telaManipularConta.setVisible(false);
-		telaClientes.renderTable();
-		telaClientes.repaint();
+	}
+	
+	public static void closeTelaClientes() {
+		telaClientes.setVisible(false);
+		telaClientes.dispose();
 	}
 	
 	public static void openTelaContas() {
+		telaContas = new TelaVincularConta();
 		telaContas.setVisible(true);
-		telaClientes.setVisible(false);
-		telaManipularConta.setVisible(false);
-		telaContas.renderTable();
-		telaContas.repaint();
+	}
+	
+	public static void closeTelaContas() {
+		telaContas.setVisible(false);
+		telaContas.dispose();
 	}
 	
 	public static void openTelaManipularConta() {
+		telaManipularConta = new TelaManipularConta();
 		telaManipularConta.setVisible(true);
-		telaContas.setVisible(false);
-		telaClientes.setVisible(false);
-		telaManipularConta.renderTable();
-		telaManipularConta.repaint();
+	}
+	
+	public static void closeTelaManipularConta() {
+		telaManipularConta.setVisible(false);
+		telaManipularConta.dispose();
 	}
 
 }

@@ -29,12 +29,11 @@ public class TelaManterCliente extends JFrame {
 	private JLabel labelNovoCliente;
 	private JLabel labelSalario;
 	private JTextField campoSalario;
-	private TableClienteModel tableModel;
 	private JButton buttonIrParaAcoes;
 	private JButton buttonIrParaContas;
 	
 	public ArrayList<Cliente> getListaClientes() {
-		return tableModel.getListaClientes();
+		return Controller.tableModel.getListaClientes();
 	}
 	
 	public void renderTable() {
@@ -50,12 +49,12 @@ public class TelaManterCliente extends JFrame {
 			dados[i][6] = (double) this.getListaClientes().get(i).getSalario();//String.valueOf(this.tableModel.getListaClientes().get(i).getSalario());
 				
 			for (int j=0; j<7; j++) {
-				tableModel.isCellEditable(i, j);
-				tableModel.getColumnClass(j);
+				Controller.tableModel.isCellEditable(i, j);
+				Controller.tableModel.getColumnClass(j);
 			}
 		}
 		
-		table.setModel(new javax.swing.table.DefaultTableModel(dados, this.tableModel.getColunasEditable()));
+		table.setModel(new javax.swing.table.DefaultTableModel(dados, Controller.tableModel.getColunasEditable()));
 		table.setAutoCreateRowSorter(true);
 	}
 	
@@ -78,7 +77,6 @@ public class TelaManterCliente extends JFrame {
 	}
 
 	public TelaManterCliente() {
-		this.tableModel = new TableClienteModel();
 		table = new JTable() {
 			private static final long serialVersionUID = 1L;
 
@@ -91,7 +89,7 @@ public class TelaManterCliente extends JFrame {
 			  }
 			}
 		};
-		table.setModel(tableModel);
+		table.setModel(Controller.tableModel);
 		
 		renderTable();	
 
@@ -198,7 +196,7 @@ public class TelaManterCliente extends JFrame {
 					}
 					else {
 						Cliente cliente = new Cliente(id, nome, sobrenome, rg, cpf, endereco, salario);
-						tableModel.addCliente(cliente);
+						Controller.tableModel.addCliente(cliente);
 						
 						renderTable();
 						JOptionPane.showMessageDialog (contentPane, "Ciente adicionado!");
@@ -220,10 +218,10 @@ public class TelaManterCliente extends JFrame {
 		labelNovoCliente.setBounds(252, 272, 123, 14);
 		contentPane.add(labelNovoCliente);
 		
-		JButton buttonSalvarAlteracoes = new JButton("Salvar alterações");
+		JButton buttonSalvarAlteracoes = new JButton("Salvar alteraï¿½ï¿½es");
 		buttonSalvarAlteracoes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ev) {
-				int numLinhas = tableModel.getListaClientes().size();
+				int numLinhas = Controller.tableModel.getListaClientes().size();
 				String nome, sobrenome, rg, cpf, endereco, salarioS;
 				double salario;
 				int id;
@@ -261,13 +259,13 @@ public class TelaManterCliente extends JFrame {
 						salario = validaSalario(salarioS);
 						
 						Cliente c = new Cliente(id, nome, sobrenome, rg, cpf, endereco, salario);
-						tableModel.addCliente(c);
+						Controller.tableModel.addCliente(c);
 					}
 					
 					renderTable();
-					JOptionPane.showMessageDialog (contentPane, "Alterações salvas!");
+					JOptionPane.showMessageDialog (contentPane, "Alteraï¿½ï¿½es salvas!");
 				} else {
-					JOptionPane.showMessageDialog (contentPane, "Alterações invalidas!");
+					JOptionPane.showMessageDialog (contentPane, "Alteraï¿½ï¿½es invalidas!");
 				}
 				
 			}
@@ -282,7 +280,7 @@ public class TelaManterCliente extends JFrame {
 				if (linha > -1) {
 					int dialogResult = JOptionPane.showConfirmDialog (contentPane, "Deseja realmente excluir o cliente?","Aviso!", 0);
 					if (dialogResult == 0) {
-						tableModel.removeCliente(linha);
+						Controller.tableModel.removeCliente(linha);
 						renderTable();
 						JOptionPane.showMessageDialog (contentPane, "Registro removido");
 					}
@@ -297,6 +295,7 @@ public class TelaManterCliente extends JFrame {
 		buttonIrParaContas = new JButton("Ir para acoes");
 		buttonIrParaContas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				Controller.closeTelaClientes();
 				Controller.openTelaManipularConta();
 			}
 		});
@@ -306,6 +305,7 @@ public class TelaManterCliente extends JFrame {
 		buttonIrParaAcoes = new JButton("Ir para contas");
 		buttonIrParaAcoes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				Controller.closeTelaClientes();
 				Controller.openTelaContas();
 			}
 		});
