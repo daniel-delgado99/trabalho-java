@@ -25,9 +25,6 @@ public abstract class Conta implements ContaI {
 	public void setSaldoConta(double saldoConta) {
 		this.saldoConta = saldoConta;
 	}
-	public Cliente getDonoConta() {
-		return this.donoConta;
-	}
 	public void setDonoConta(Cliente donoConta) {
 		this.donoConta = donoConta;
 	}

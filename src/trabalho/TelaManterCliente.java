@@ -246,7 +246,7 @@ public class TelaManterCliente extends JFrame {
 				
 				// loop adicionar
 				if (!hasInvalidValue) {
-					getListaClientes().clear();
+					//Controller.tableModel.getListaClientes().clear();
 					for (int i=0; i<numLinhas; i++) {
 						id = (int) table.getValueAt(i, 0);
 						nome = (String) table.getValueAt(i, 1);
@@ -258,8 +258,18 @@ public class TelaManterCliente extends JFrame {
 						
 						salario = validaSalario(salarioS);
 						
-						Cliente c = new Cliente(id, nome, sobrenome, rg, cpf, endereco, salario);
-						Controller.tableModel.addCliente(c);
+						Cliente c = Controller.tableModel.getClienteById(id);
+						c.setNome(nome);
+						c.setSobrenome(sobrenome);
+						c.setRg(rg);
+						c.setCpf(cpf);
+						c.setEndereco(endereco);
+						c.setSalario(salario);
+						Controller.tableModel.setCliente(i, c);
+						if (c.getConta() != null) {
+							c.getConta().setDonoConta(c);
+							c.getConta().getDono();
+						}
 					}
 					
 					renderTable();

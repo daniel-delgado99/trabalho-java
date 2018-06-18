@@ -81,6 +81,15 @@ public class TableClienteModel extends AbstractTableModel {
     	this.listaClientes.add(cliente);
     }
     
+    public Cliente getClienteById (int id) {
+    	for (int i=0; i<this.getListaClientes().size(); i++) {
+    		if (this.getCliente(i).getId() == id) {
+    			return this.getCliente(i);
+    		}
+    	} 
+    	return null;
+    }
+    
     public void removeCliente(int linha) {
     	if (this.listaClientes.get(linha).getConta() == null) {
     		this.listaClientes.remove(linha);
@@ -88,8 +97,10 @@ public class TableClienteModel extends AbstractTableModel {
     		this.listaContas.remove(this.getContaFromClienteId(linha));
     		this.listaClientes.remove(linha);
     	}
-    	
-    	
+    }
+    
+    public void setCliente(int index, Cliente cliente) {
+    	this.listaClientes.set(index, cliente);
     }
     
     public void addConta (Conta conta) {
