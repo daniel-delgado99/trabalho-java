@@ -253,8 +253,8 @@ public class TelaManterCliente extends JFrame {
 						id = (int) table.getValueAt(i, 0);
 						nome = (String) table.getValueAt(i, 1);
 						sobrenome = (String) table.getValueAt(i, 2);
-						cpf = (String) table.getValueAt(i, 3);
-						rg = (String) table.getValueAt(i, 4);
+						rg = (String) table.getValueAt(i, 3);
+						cpf = (String) table.getValueAt(i, 4);
 						endereco = (String) table.getValueAt(i, 5);
 						salarioS = table.getValueAt(i, 6).toString();
 						
