@@ -201,8 +201,8 @@ public class TelaManipularConta extends JFrame {
 				double valor = converteValor(campoSaque.getText());
 				if (table.getSelectedRow() > -1) {
 					if (valor > 0) {
-						if (getCliente(table.getSelectedRow()).getConta().saca(valor)) {
-							lblSaldo.setText("Saldo: " + getCliente(table.getSelectedRow()).getConta().getSaldo());
+						if (getListaContas().get(table.getSelectedRow()).saca(valor)) {
+							lblSaldo.setText("Saldo: " + getListaContas().get(table.getSelectedRow()).getSaldo());
 							JOptionPane.showMessageDialog (contentPane, "Saque realizado");
 							campoSaque.setText("");
 						} else {
@@ -247,10 +247,13 @@ public class TelaManipularConta extends JFrame {
 		btnRemunera.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (table.getSelectedRow() > -1) {
-					getListaContas().get(table.getSelectedRow()).remunera();
-					JOptionPane.showMessageDialog (contentPane, "Remunerado!");
-					lblSaldo.setText("Saldo: " + getListaContas().get(table.getSelectedRow()).getSaldo());
-					contentPane.repaint();
+					if (getListaContas().get(table.getSelectedRow()).getSaldo() > 0) {
+						getListaContas().get(table.getSelectedRow()).remunera();
+						JOptionPane.showMessageDialog (contentPane, "Remunerado!");
+						lblSaldo.setText("Saldo: " + getListaContas().get(table.getSelectedRow()).getSaldo());
+						contentPane.repaint();
+					}
+					JOptionPane.showMessageDialog (contentPane, "Saldo negativo, não é possível remunerar");
 				} else {
 					JOptionPane.showMessageDialog (contentPane, "Selecione uma conta!");
 				}

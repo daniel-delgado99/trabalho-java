@@ -69,12 +69,7 @@ public class TelaVincularConta extends JFrame {
 	
 	public boolean validaContaCorrente(double depositoInicial, double limite) {
 		if (depositoInicial > 0 && limite > 0) {
-			if (depositoInicial <= limite) {
-				return true;
-			} else {
-				JOptionPane.showMessageDialog (contentPane, "Deposito inicial n�o pode ultrapassar limite");
-				return false;
-			}
+			return true;
 		} else {
 			JOptionPane.showMessageDialog (contentPane, "Por favor insira valores v�lidos");
 			return false;
