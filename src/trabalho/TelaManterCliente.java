@@ -288,7 +288,7 @@ public class TelaManterCliente extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				int linha = table.getSelectedRow();
 				if (linha > -1) {
-					int dialogResult = JOptionPane.showConfirmDialog (contentPane, "Deseja realmente excluir o cliente?","Aviso!", 0);
+					int dialogResult = JOptionPane.showConfirmDialog (contentPane, "Deseja realmente excluir o cliente?\nIsso apagará o cliente e sua conta","Aviso!", 0);
 					if (dialogResult == 0) {
 						Controller.tableModel.removeCliente(linha);
 						renderTable();

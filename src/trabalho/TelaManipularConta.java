@@ -86,21 +86,21 @@ public class TelaManipularConta extends JFrame {
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				campoNome.setText(getCliente(table.getSelectedRow()).getNome() + " " + getCliente(table.getSelectedRow()).getSobrenome());
-				campoCPF.setText(getCliente(table.getSelectedRow()).getCpf());
+				campoNome.setText(getListaContas().get(table.getSelectedRow()).getDono().getNome() + " " + getListaContas().get(table.getSelectedRow()).getDono().getSobrenome());
+				campoCPF.setText(getListaContas().get(table.getSelectedRow()).getDono().getCpf());
 				
-				String tipoConta = getCliente(table.getSelectedRow()).getTipoConta();
+				String tipoConta = getListaContas().get(table.getSelectedRow()).getDono().getTipoConta();
 				labelTipoDeConta.setText("Tipo de conta: " + tipoConta);
-				lblSaldo.setText("Saldo: " + getCliente(table.getSelectedRow()).getConta().getSaldo());
-				labelNumeroConta.setText("Numero da conta: " + getCliente(table.getSelectedRow()).getConta().getNumero());
+				lblSaldo.setText("Saldo: " + getListaContas().get(table.getSelectedRow()).getSaldo());
+				labelNumeroConta.setText("Numero da conta: " + getListaContas().get(table.getSelectedRow()).getNumero());
 				
 				if (tipoConta == "Conta corrente") {
 					label2.setVisible(false);
-					label1.setText("Limite: " + ((ContaCorrente) getCliente(table.getSelectedRow()).getConta()).getLimite());
+					label1.setText("Limite: " + ((ContaCorrente) getListaContas().get(table.getSelectedRow())).getLimite());
 				} else if (tipoConta == "Conta investimento") {
 					label2.setVisible(true);
-					label1.setText("Montante minimo: " + ((ContaInvestimento) getCliente(table.getSelectedRow()).getConta()).getMontanteMinimo());
-					label2.setText("Deposito minimo: " + ((ContaInvestimento) getCliente(table.getSelectedRow()).getConta()).getDepositoMinimo());
+					label1.setText("Montante minimo: " + ((ContaInvestimento) getListaContas().get(table.getSelectedRow())).getMontanteMinimo());
+					label2.setText("Deposito minimo: " + ((ContaInvestimento) getListaContas().get(table.getSelectedRow())).getDepositoMinimo());
 				}
 			}
 		});
@@ -225,8 +225,8 @@ public class TelaManipularConta extends JFrame {
 				double valor = converteValor(campoDeposito.getText());
 				if (table.getSelectedRow() > -1) {
 					if (valor > 0) {
-						if (getCliente(table.getSelectedRow()).getConta().deposita(valor)) {
-							lblSaldo.setText("Saldo: " + getCliente(table.getSelectedRow()).getConta().getSaldo());
+						if (getListaContas().get(table.getSelectedRow()).deposita(valor)) {
+							lblSaldo.setText("Saldo: " + getListaContas().get(table.getSelectedRow()).getSaldo());
 							JOptionPane.showMessageDialog (contentPane, "Dep�sito realizado");
 							campoDeposito.setText("");
 						} else {
@@ -247,9 +247,9 @@ public class TelaManipularConta extends JFrame {
 		btnRemunera.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (table.getSelectedRow() > -1) {
-					getCliente(table.getSelectedRow()).getConta().remunera();
+					getListaContas().get(table.getSelectedRow()).remunera();
 					JOptionPane.showMessageDialog (contentPane, "Remunerado!");
-					lblSaldo.setText("Saldo: " + getCliente(table.getSelectedRow()).getConta().getSaldo());
+					lblSaldo.setText("Saldo: " + getListaContas().get(table.getSelectedRow()).getSaldo());
 					contentPane.repaint();
 				} else {
 					JOptionPane.showMessageDialog (contentPane, "Selecione uma conta!");
