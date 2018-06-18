@@ -54,15 +54,15 @@ public class TelaVincularConta extends JFrame {
 				if (depositoInicial >= montanteMinimo) {
 					return true;
 				} else {
-					JOptionPane.showMessageDialog (contentPane, "Dep�sito inicial deve ser maior ou igual ao montante m�nimo");
+					JOptionPane.showMessageDialog (contentPane, "Deposito inicial deve ser maior ou igual ao montante minimo");
 					return false;
 				}
 			} else {
-				JOptionPane.showMessageDialog (contentPane, "Dep�sito inicial deve ser maior ou igual ao dep�sito m�nimo");
+				JOptionPane.showMessageDialog (contentPane, "Deposito inicial deve ser maior ou igual ao deposito minimo");
 				return false;
 			}
 		} else {
-			JOptionPane.showMessageDialog (contentPane, "Por favor insira valores v�lidos");
+			JOptionPane.showMessageDialog (contentPane, "Por favor insira valores validos");
 			return false;
 		}		
 	}
@@ -71,7 +71,7 @@ public class TelaVincularConta extends JFrame {
 		if (depositoInicial > 0 && limite > 0) {
 			return true;
 		} else {
-			JOptionPane.showMessageDialog (contentPane, "Por favor insira valores v�lidos");
+			JOptionPane.showMessageDialog (contentPane, "Por favor insira valores validos");
 			return false;
 		}
 	}
@@ -227,7 +227,7 @@ public class TelaVincularConta extends JFrame {
 							}
 						}
 					} else {
-						JOptionPane.showMessageDialog (contentPane, "Este cliente j� possui uma conta");
+						JOptionPane.showMessageDialog (contentPane, "Este cliente ja possui uma conta");
 					}
 				} else {
 					JOptionPane.showMessageDialog (contentPane, "Selecione um cliente");
@@ -244,7 +244,7 @@ public class TelaVincularConta extends JFrame {
 					campo1.setText("");
 					campo2.setText("");
 					campo3.setText("");
-					labelCampo1.setText("Dep�sito inicial");
+					labelCampo1.setText("Deposito inicial");
 					labelCampo2.setText("Limite");
 					labelCampo3.setVisible(false);
 					campo3.setVisible(false);
@@ -255,11 +255,11 @@ public class TelaVincularConta extends JFrame {
 					campo1.setText("");
 					campo2.setText("");
 					campo3.setText("");
-					labelCampo1.setText("Montante m�nimo");
-					labelCampo2.setText("Dep�sito m�nimo");
+					labelCampo1.setText("Montante minimo");
+					labelCampo2.setText("Deposito minimo");
 					labelCampo3.setVisible(true);
 					campo3.setVisible(true);
-					labelCampo3.setText("Dep�sito inicial");
+					labelCampo3.setText("Deposito inicial");
 					
 					contentPane.repaint();
 				}
@@ -272,7 +272,7 @@ public class TelaVincularConta extends JFrame {
 		labelTipoDeConta.setBounds(298, 149, 100, 14);
 		contentPane.add(labelTipoDeConta);
 		
-		labelCampo1 = new JLabel("Dep�sito inicial");
+		labelCampo1 = new JLabel("Deposito inicial");
 		labelCampo1.setBounds(298, 215, 110, 15);
 		contentPane.add(labelCampo1);
 		
@@ -290,7 +290,7 @@ public class TelaVincularConta extends JFrame {
 		campo2.setBounds(295, 273, 250, 19);
 		contentPane.add(campo2);
 		
-		labelCampo3 = new JLabel("Dep�sito inicial");
+		labelCampo3 = new JLabel("Deposito inicial");
 		labelCampo3.setBounds(298, 307, 110, 15);
 		labelCampo3.setVisible(false);
 		contentPane.add(labelCampo3);

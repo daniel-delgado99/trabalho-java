@@ -14,18 +14,18 @@ public class TableClienteModel extends AbstractTableModel {
         this.listaClientes = new ArrayList<>();
         this.listaContas = new ArrayList<>();
         
-        Cliente c1 = new Cliente(1, "Ana", "Monteiro", "12.345.678-9", "123.456.789-00", "Rua A, numero 1", 1100);
-        Cliente c2 = new Cliente(2, "Jo�o", "da Silva", "12.345.678-9", "123.456.789-00", "Rua B, numero 2", 2000);
-        Cliente c3 = new Cliente(3, "Pedro", "Santos", "12.345.678-9", "123.456.789-00", "Rua C, numero 3", 2500);
-        Cliente c4 = new Cliente(4, "Maria", "Pereira", "12.345.678-9", "123.456.789-00", "Rua D, numero 4", 4500);
-        Cliente c5 = new Cliente(5, "Carlos", "Oliveira", "12.345.678-9", "123.456.789-00", "Rua E, numero 5", 8000);
-        Cliente c6 = new Cliente(6, "Tadeu", "Souza", "12.345.678-9", "123.456.789-00", "Rua F, numero 6", 4700);
-        Cliente c7 = new Cliente(7, "Tadeu", "Souza", "12.345.678-9", "123.456.789-00", "Rua F, numero 6", 9000);
-        Cliente c8 = new Cliente(8, "Tadeu", "Souza", "12.345.678-9", "123.456.789-00", "Rua F, numero 6", 2300);
-        Cliente c9 = new Cliente(9, "Tadeu", "Souza", "12.345.678-9", "123.456.789-00", "Rua F, numero 6", 1700);
-        Cliente c10 = new Cliente(10, "Tadeu", "Souza", "12.345.678-9", "123.456.789-00", "Rua F, numero 6", 1500);
-        Cliente c11 = new Cliente(11, "Tadeu", "Souza", "12.345.678-9", "123.456.789-00", "Rua F, numero 6", 5500);
-        Cliente c12 = new Cliente(12, "Tadeu", "Souza", "12.345.678-9", "123.456.789-00", "Rua F, numero 6", 6900);
+        Cliente c1  = new Cliente( 1, "Ana", 	"Monteiro", 	"22.576.794-6", "205.825.024-97", "Rua A, numero 01", 1100);
+        Cliente c2  = new Cliente( 2, "Marcos", "Freitas", 		"34.300.315-6", "851.801.994-09", "Rua B, numero 02", 2000);
+        Cliente c3  = new Cliente( 3, "Pedro", 	"Santos", 		"47.731.413-2", "639.852.994-47", "Rua C, numero 03", 2500);
+        Cliente c4  = new Cliente( 4, "Maria", 	"Pereira", 		"17.741.866-7", "365.517.724-04", "Rua D, numero 04", 4500);
+        Cliente c5  = new Cliente( 5, "Carlos", "Oliveira", 	"22.529.531-3", "023.951.924-81", "Rua E, numero 05", 8000);
+        Cliente c6  = new Cliente( 6, "Yuri", 	"Bernardes",	"13.449.951-7", "095.458.174-10", "Rua G, numero 06", 4700);
+        Cliente c7  = new Cliente( 7, "Camila",	"Souza", 		"12.402.480-4", "502.215.854-00", "Rua H, numero 07", 9000);
+        Cliente c8  = new Cliente( 8, "Renan", 	"Nascimento", 	"15.741.928-9", "085.387.904-47", "Rua I, numero 08", 2300);
+        Cliente c9  = new Cliente( 9, "Isabela","Novaes", 		"30.159.890-3", "646.416.814-22", "Rua J, numero 09", 1700);
+        Cliente c10 = new Cliente(10, "Carla", 	"Ribeiro", 		"46.836.572-2", "463.227.294-97", "Rua K, numero 10", 1500);
+        Cliente c11 = new Cliente(11, "Vilson", "Gonçalves",	"41.949.172-7", "887.163.294-06", "Rua L, numero 11", 5500);
+        Cliente c12 = new Cliente(12, "Emanuel","Souza", 		"22.584.220-8", "109.896.684-87", "Rua M, numero 12", 6900);
         
         Conta conta1 = new ContaCorrente(1, 1000, 5000, c1);
         Conta conta2 = new ContaCorrente(2, 200, 500, c2);

@@ -206,10 +206,10 @@ public class TelaManipularConta extends JFrame {
 							JOptionPane.showMessageDialog (contentPane, "Saque realizado");
 							campoSaque.setText("");
 						} else {
-							JOptionPane.showMessageDialog (contentPane, "N�o foi poss�vel realizar o saque");
+							JOptionPane.showMessageDialog (contentPane, "Nao foi possivel realizar o saque");
 						}
 					} else {
-						JOptionPane.showMessageDialog (contentPane, "Insira um valor v�lido!");
+						JOptionPane.showMessageDialog (contentPane, "Insira um valor valido!");
 					}
 				} else {
 					JOptionPane.showMessageDialog (contentPane, "Selecione uma conta!");
@@ -227,13 +227,13 @@ public class TelaManipularConta extends JFrame {
 					if (valor > 0) {
 						if (getListaContas().get(table.getSelectedRow()).deposita(valor)) {
 							lblSaldo.setText("Saldo: " + getListaContas().get(table.getSelectedRow()).getSaldo());
-							JOptionPane.showMessageDialog (contentPane, "Dep�sito realizado");
+							JOptionPane.showMessageDialog (contentPane, "Deposito realizado");
 							campoDeposito.setText("");
 						} else {
-							JOptionPane.showMessageDialog (contentPane, "Favor depositar mais que o valor m�nimo");
+							JOptionPane.showMessageDialog (contentPane, "Favor depositar ao menos o valor minimo");
 						}
 					} else {
-						JOptionPane.showMessageDialog (contentPane, "Insira um valor v�lido!");
+						JOptionPane.showMessageDialog (contentPane, "Insira um valor valido!");
 					}
 				} else {
 					JOptionPane.showMessageDialog (contentPane, "Selecione uma conta!");

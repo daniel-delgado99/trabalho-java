@@ -56,6 +56,14 @@ public class TelaManterCliente extends JFrame {
 		
 		table.setModel(new javax.swing.table.DefaultTableModel(dados, Controller.tableModel.getColunasEditable()));
 		table.setAutoCreateRowSorter(true);
+		
+		table.getColumnModel().getColumn(0).setMaxWidth(25);
+		table.getColumnModel().getColumn(1).setMaxWidth(60);
+		table.getColumnModel().getColumn(2).setMaxWidth(80);
+		table.getColumnModel().getColumn(3).setMaxWidth(100);
+		table.getColumnModel().getColumn(4).setMaxWidth(120);
+		table.getColumnModel().getColumn(5).setMaxWidth(135);
+		table.getColumnModel().getColumn(6).setMaxWidth(60);
 	}
 	
 	public boolean validaCampos(String campo1, String campo2, String campo3, String campo4, String campo5) {
@@ -218,7 +226,7 @@ public class TelaManterCliente extends JFrame {
 		labelNovoCliente.setBounds(252, 272, 123, 14);
 		contentPane.add(labelNovoCliente);
 		
-		JButton buttonSalvarAlteracoes = new JButton("Salvar altera��es");
+		JButton buttonSalvarAlteracoes = new JButton("Salvar alteracoes");
 		buttonSalvarAlteracoes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ev) {
 				int numLinhas = Controller.tableModel.getListaClientes().size();
@@ -273,9 +281,9 @@ public class TelaManterCliente extends JFrame {
 					}
 					
 					renderTable();
-					JOptionPane.showMessageDialog (contentPane, "Altera��es salvas!");
+					JOptionPane.showMessageDialog (contentPane, "Alteracoes salvas!");
 				} else {
-					JOptionPane.showMessageDialog (contentPane, "Altera��es invalidas!");
+					JOptionPane.showMessageDialog (contentPane, "Alteracoes invalidas!");
 				}
 				
 			}
@@ -288,14 +296,14 @@ public class TelaManterCliente extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				int linha = table.getSelectedRow();
 				if (linha > -1) {
-					int dialogResult = JOptionPane.showConfirmDialog (contentPane, "Deseja realmente excluir o cliente?\nIsso apagará o cliente e sua conta","Aviso!", 0);
+					int dialogResult = JOptionPane.showConfirmDialog (contentPane, "Deseja realmente excluir o cliente?\nIsso apagara o cliente e sua conta","Aviso!", 0);
 					if (dialogResult == 0) {
 						Controller.tableModel.removeCliente(linha);
 						renderTable();
-						JOptionPane.showMessageDialog (contentPane, "Registro removido");
+						JOptionPane.showMessageDialog (contentPane, "Cliente removido");
 					}
 				} else {
-					JOptionPane.showConfirmDialog (contentPane, "Selecione um registro!", "Aviso!", -1);
+					JOptionPane.showMessageDialog (contentPane, "Selecione um cliente");
 				}
 			}
 		});
