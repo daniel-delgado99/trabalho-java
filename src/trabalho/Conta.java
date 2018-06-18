@@ -13,10 +13,10 @@ public abstract class Conta implements ContaI {
 		this.saldoConta = this.depositoInicial;
 		this.donoConta = donoConta;
 	}
-	public int getNumeroConta() {
+	public int getNumero() {
 		return this.numeroConta;
 	}
-	public void setNumeroConta(int numeroConta) {
+	public void setNumero(int numeroConta) {
 		this.numeroConta = numeroConta;
 	}
 	public double getSaldoConta() {
@@ -49,36 +49,11 @@ public abstract class Conta implements ContaI {
 		}
 	}
 	
-	public boolean saca (double valor) {
-		if (valor > 0) {
-			double saldoAtual = this.getSaldoConta();
-			if (valor > saldoAtual) {
-				System.out.println("Valor ultrapassa saldo da conta");//dar mensagem de erro
-				return false;
-			} else {
-				saldoAtual -= valor;
-				this.setSaldoConta((saldoAtual));
-				System.out.println("Valor de" + valor + " sacado, saldo atual = " + saldoAtual);//dar mensagem de erro
-				return true;
-			}
-		} else {
-			return false;
-		}
-	}
-	
 	public Cliente getDono() {
 		return this.donoConta;
 	}
 
-	public int getNumero() {
-		return this.numeroConta;
-	}
-
 	public double getSaldo() {
 		return this.saldoConta;
-	}
-
-	public void remunera() {
-		this.saldoConta = this.saldoConta * 1.02;
 	}
 }

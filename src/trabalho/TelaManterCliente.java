@@ -30,6 +30,8 @@ public class TelaManterCliente extends JFrame {
 	private JLabel labelSalario;
 	private JTextField campoSalario;
 	private TableClienteModel tableModel;
+	private JButton buttonIrParaAcoes;
+	private JButton buttonIrParaContas;
 	
 	public ArrayList<Cliente> getListaClientes() {
 		return tableModel.getListaClientes();
@@ -292,12 +294,22 @@ public class TelaManterCliente extends JFrame {
 		buttonExcluir.setBounds(20, 231, 150, 23);
 		contentPane.add(buttonExcluir);
 		
-		JButton btnIrParaContas = new JButton("Ir para contas");
-		btnIrParaContas.addActionListener(new ActionListener() {
+		buttonIrParaContas = new JButton("Ir para acoes");
+		buttonIrParaContas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				Controller.openTelaManipularConta();
 			}
 		});
-		btnIrParaContas.setBounds(459, 387, 107, 23);
-		contentPane.add(btnIrParaContas);
+		buttonIrParaContas.setBounds(420, 387, 160, 23);
+		contentPane.add(buttonIrParaContas);
+		
+		buttonIrParaAcoes = new JButton("Ir para contas");
+		buttonIrParaAcoes.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Controller.openTelaContas();
+			}
+		});
+		buttonIrParaAcoes.setBounds(20, 387, 160, 23);
+		contentPane.add(buttonIrParaAcoes);
 	}
 }

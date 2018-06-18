@@ -14,4 +14,23 @@ public class ContaCorrente extends Conta {
 	public void setLimite(double limite) {
 		this.limite = limite;
 	}
+	
+	public boolean saca (double valor) {
+		if (valor > 0) {
+			double saldoAtual = this.getSaldoConta();
+			if (saldoAtual-valor < this.getLimite()*(-1)) {
+				return false;
+			} else {
+				saldoAtual -= valor;
+				this.setSaldoConta((saldoAtual));
+				return true;
+			}
+		} else {
+			return false;
+		}
+	}
+	
+	public void remunera() {
+		this.setSaldoConta(this.getSaldo() * 1.01);
+	}
 }

@@ -34,6 +34,8 @@ public class TelaVincularConta extends JFrame {
 	private TableClienteModel tableModel;
 	private JComboBox<?> comboBox;
 	private Object[][] comboOptions = new Object[][] { {"Conta Corrente", "Conta Investimento"}, {1, 2} };
+	private JButton buttonIrParaClientes;
+	private JButton buttonIrParaAcoes;
 	
 	public ArrayList<Cliente> getListaClientes() {
 		return tableModel.getListaClientes();
@@ -45,6 +47,39 @@ public class TelaVincularConta extends JFrame {
 	
 	public ArrayList<Conta> getListaContas() {
 		return tableModel.getListaContas();
+	}
+	
+	public boolean validaContaInvestimento(double depositoMinimo, double montanteMinimo, double depositoInicial) {
+		if (depositoMinimo > 0 && montanteMinimo > 0 && depositoInicial > 0) {
+			if (depositoInicial >= depositoMinimo) {
+				if (depositoInicial >= montanteMinimo) {
+					return true;
+				} else {
+					JOptionPane.showMessageDialog (contentPane, "Depósito inicial deve ser maior ou igual ao montante mínimo");
+					return false;
+				}
+			} else {
+				JOptionPane.showMessageDialog (contentPane, "Depósito inicial deve ser maior ou igual ao depósito mínimo");
+				return false;
+			}
+		} else {
+			JOptionPane.showMessageDialog (contentPane, "Por favor insira valores válidos");
+			return false;
+		}		
+	}
+	
+	public boolean validaContaCorrente(double depositoInicial, double limite) {
+		if (depositoInicial > 0 && limite > 0) {
+			if (depositoInicial <= limite) {
+				return true;
+			} else {
+				JOptionPane.showMessageDialog (contentPane, "Deposito inicial não pode ultrapassar limite");
+				return false;
+			}
+		} else {
+			JOptionPane.showMessageDialog (contentPane, "Por favor insira valores válidos");
+			return false;
+		}
 	}
 	
 	public double converteValor (String texto) {
@@ -79,7 +114,6 @@ public class TelaVincularConta extends JFrame {
 		this.tableModel = new TableClienteModel();
 		table = new JTable() {
 			private static final long serialVersionUID = 1L;
-
 			@Override
 			public boolean isCellEditable(int row, int column) {
 				return false;
@@ -104,7 +138,7 @@ public class TelaVincularConta extends JFrame {
 		contentPane.setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(20, 30, 258, 380);
+		scrollPane.setBounds(20, 30, 258, 341);
 		contentPane.add(scrollPane);
 		
 		scrollPane.setViewportView(table);
@@ -156,11 +190,8 @@ public class TelaVincularConta extends JFrame {
 							depositoInicial = converteValor(campo1.getText());
 							limite = converteValor(campo2.getText());
 							
-							if (depositoInicial <= 0 || limite <= 0) {
-								JOptionPane.showMessageDialog (contentPane, "Por favor insira valores válidos");
-							} else {
+							if (validaContaCorrente(depositoInicial, limite)) {
 								Conta conta = new ContaCorrente(numeroConta, depositoInicial, limite, cliente);
-								conta.deposita(depositoInicial);
 								tableModel.addConta(conta);
 								tableModel.relacionarClienteConta(cliente, conta);
 								
@@ -187,14 +218,12 @@ public class TelaVincularConta extends JFrame {
 							} else {
 								numeroConta = tableModel.getListaContas().get(getListaContas().size()-1).getNumero() + 1;
 							}
-							depositoMinimo = converteValor(campo1.getText());
-							montanteMinimo = converteValor(campo2.getText());
+							montanteMinimo = converteValor(campo1.getText());
+							depositoMinimo = converteValor(campo2.getText());
 							depositoInicial = converteValor(campo3.getText());
 							
 							
-							if (depositoInicial <= 0 || montanteMinimo <= 0 || depositoMinimo <=0 ) {
-								JOptionPane.showMessageDialog (contentPane, "Por favor insira valores válidos");
-							} else {
+							if (validaContaInvestimento(depositoMinimo, montanteMinimo, depositoInicial)) {
 								Conta conta = new ContaInvestimento(numeroConta, montanteMinimo, depositoMinimo, depositoInicial, cliente);
 								tableModel.addConta(conta);
 								tableModel.relacionarClienteConta(cliente, conta);
@@ -222,7 +251,7 @@ public class TelaVincularConta extends JFrame {
 				}				
 			}
 		});
-		buttonCriar.setBounds(415, 385, 159, 25);
+		buttonCriar.setBounds(415, 351, 159, 25);
 		contentPane.add(buttonCriar);
 		
 		comboBox = new JComboBox<Object>(comboOptions[0]);
@@ -298,5 +327,23 @@ public class TelaVincularConta extends JFrame {
 		JLabel lblConta = new JLabel("Conta");
 		lblConta.setBounds(298, 124, 46, 14);
 		contentPane.add(lblConta);
+		
+		buttonIrParaClientes = new JButton("Ir para clientes");
+		buttonIrParaClientes.setBounds(10, 387, 165, 23);
+		buttonIrParaClientes.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Controller.openTelaClientes();
+			}
+		});
+		contentPane.add(buttonIrParaClientes);
+		
+		buttonIrParaAcoes = new JButton("Ir para acoes");
+		buttonIrParaAcoes.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Controller.openTelaManipularConta();
+			}
+		});
+		buttonIrParaAcoes.setBounds(409, 387, 165, 23);
+		contentPane.add(buttonIrParaAcoes);
 	}
 }

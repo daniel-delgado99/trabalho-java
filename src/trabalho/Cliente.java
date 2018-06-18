@@ -10,7 +10,7 @@ public class Cliente {
 	private double salario;
 	private Conta conta;
 	
-	public Cliente(int id, String nome, String sobrenome, String cpf, String rg, String endereco, double salario) {
+	public Cliente(int id, String nome, String sobrenome, String rg, String cpf, String endereco, double salario) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -19,7 +19,7 @@ public class Cliente {
 		this.rg = rg;
 		this.endereco = endereco;
 		this.salario = salario;
-		this.conta=null;
+		this.conta = null;
 	}
 
 	public int getId() {
@@ -70,6 +70,14 @@ public class Cliente {
 	}
 	public Conta getConta() {
 		return this.conta;
+	}
+	public String getTipoConta() {
+		if (this.getConta().getClass().getName() == "trabalho.ContaCorrente")
+			return "Conta corrente";
+		else if(this.getConta().getClass().getName() == "trabalho.ContaInvestimento")
+			return "Conta investimento";
+		else
+			return "Não possui conta";
 	}
 	public void setConta(Conta conta) {
 		this.conta = conta;
