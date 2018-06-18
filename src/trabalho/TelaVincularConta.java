@@ -204,11 +204,6 @@ public class TelaVincularConta extends JFrame {
 								renderTable();
 								
 								JOptionPane.showMessageDialog (contentPane, "Conta salva!");
-								for (int i=0; i<tableModel.getListaContas().size(); i++) {
-									System.out.println(tableModel.getListaContas().get(i).getDono().getNome());
-									System.out.println(tableModel.getListaContas().get(i).getNumero());
-									System.out.println(tableModel.getListaContas().get(i).getSaldo());
-								}
 							}
 						} else if (comboOptions[1][comboBox.getSelectedIndex()] == (Object) 2) {
 							double depositoInicial, montanteMinimo, depositoMinimo;
