@@ -145,8 +145,8 @@ public class TelaManipularConta extends JFrame {
 		contentPane.add(campoCPF);
 		campoCPF.setColumns(10);
 		
-		labelNovoCliente = new JLabel("Criar conta para cliente");
-		labelNovoCliente.setBounds(370, 12, 165, 14);
+		labelNovoCliente = new JLabel("Manipular conta de cliente");
+		labelNovoCliente.setBounds(332, 12, 218, 14);
 		contentPane.add(labelNovoCliente);
 		
 		labelTipoDeConta = new JLabel("Tipo de conta:");

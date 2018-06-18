@@ -166,7 +166,7 @@ public class TelaVincularConta extends JFrame {
 		campoCPF.setColumns(10);
 		
 		labelNovoCliente = new JLabel("Criar conta para cliente");
-		labelNovoCliente.setBounds(370, 12, 165, 14);
+		labelNovoCliente.setBounds(350, 12, 200, 14);
 		contentPane.add(labelNovoCliente);
 		
 		JButton buttonCriar = new JButton("Criar conta");
