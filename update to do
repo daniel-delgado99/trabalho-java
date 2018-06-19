@@ -1,7 +1,0 @@
-table.getTableHeader().setReorderingAllowed(false);
-// em todas as tabelas
-
-linha 256 tela manipular cliente
-else {
-    JOptionPane.showMessageDialog (contentPane, "Saldo negativo, não é possível remunerar");
-}
