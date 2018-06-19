@@ -72,6 +72,11 @@ public class TelaManipularConta extends JFrame {
 		
 		table.setModel(new javax.swing.table.DefaultTableModel(dados, Controller.tableModel.getColunasUneditable()));
 		table.setAutoCreateRowSorter(true);
+		table.getTableHeader().setReorderingAllowed(false);
+		
+		table.getColumnModel().getColumn(0).setMaxWidth(25);
+		table.getColumnModel().getColumn(1).setMaxWidth(200);
+		table.getColumnModel().getColumn(2).setMaxWidth(200);
 	}
 
 	public TelaManipularConta() {
@@ -252,8 +257,9 @@ public class TelaManipularConta extends JFrame {
 						JOptionPane.showMessageDialog (contentPane, "Remunerado!");
 						lblSaldo.setText("Saldo: " + getListaContas().get(table.getSelectedRow()).getSaldo());
 						contentPane.repaint();
+					} else {
+					    JOptionPane.showMessageDialog (contentPane, "Saldo negativo, não é possível remunerar");
 					}
-					JOptionPane.showMessageDialog (contentPane, "Saldo negativo, não é possível remunerar");
 				} else {
 					JOptionPane.showMessageDialog (contentPane, "Selecione uma conta!");
 				}

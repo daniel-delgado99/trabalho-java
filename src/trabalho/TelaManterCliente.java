@@ -56,6 +56,7 @@ public class TelaManterCliente extends JFrame {
 		
 		table.setModel(new javax.swing.table.DefaultTableModel(dados, Controller.tableModel.getColunasEditable()));
 		table.setAutoCreateRowSorter(true);
+		table.getTableHeader().setReorderingAllowed(false);
 		
 		table.getColumnModel().getColumn(0).setMaxWidth(25);
 		table.getColumnModel().getColumn(1).setMaxWidth(60);
