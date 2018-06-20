@@ -295,8 +295,8 @@ public class TelaManterCliente extends JFrame {
 		JButton buttonExcluir = new JButton("Excluir Registro");
 		buttonExcluir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int linha = table.getSelectedRow();
-				if (linha > -1) {
+                                int linha = Integer.parseInt(table.getValueAt(table.getSelectedRow(), 0).toString());
+                                if (linha > -1) {
 					int dialogResult = JOptionPane.showConfirmDialog (contentPane, "Deseja realmente excluir o cliente?\nIsso apagara o cliente e sua conta","Aviso!", 0);
 					if (dialogResult == 0) {
 						Controller.tableModel.removeCliente(linha);

@@ -89,13 +89,22 @@ public class TableClienteModel extends AbstractTableModel {
     	} 
     	return null;
     }
+    public Conta getContaByNumero (int numero) {
+        for (int i=0; i<this.getListaContas().size(); i++) {
+            if (this.getListaContas().get(i).getNumero() == numero) {
+                return this.getListaContas().get(i);
+            }
+        }
+        return null;
+    }
     
-    public void removeCliente(int linha) {
-    	if (this.listaClientes.get(linha).getConta() == null) {
-    		this.listaClientes.remove(linha);
+    public void removeCliente (int linha) {
+        Cliente c = (Controller.tableModel.getClienteById(linha));
+    	if (c.getConta() == null) {
+    		this.listaClientes.remove(c);
     	} else {
     		this.listaContas.remove(this.getContaFromClienteId(linha));
-    		this.listaClientes.remove(linha);
+    		this.listaClientes.remove(c);
     	}
     }
     

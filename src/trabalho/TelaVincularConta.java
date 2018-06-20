@@ -120,8 +120,8 @@ public class TelaVincularConta extends JFrame {
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				campoNome.setText(getCliente(table.getSelectedRow()).getNome() + " " + getCliente(table.getSelectedRow()).getSobrenome());
-				campoCPF.setText(getCliente(table.getSelectedRow()).getCpf());
+				campoNome.setText(Controller.tableModel.getClienteById(Integer.parseInt(table.getValueAt(table.getSelectedRow(), 0).toString())).getNome() + " " + Controller.tableModel.getClienteById(Integer.parseInt(table.getValueAt(table.getSelectedRow(), 0).toString())).getSobrenome());
+				campoCPF.setText(Controller.tableModel.getClienteById(Integer.parseInt(table.getValueAt(table.getSelectedRow(), 0).toString())).getCpf());
 			}
 		});
 		table.setModel(Controller.tableModel);

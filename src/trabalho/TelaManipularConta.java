@@ -91,8 +91,8 @@ public class TelaManipularConta extends JFrame {
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				campoNome.setText(getListaContas().get(table.getSelectedRow()).getDono().getNome() + " " + getListaContas().get(table.getSelectedRow()).getDono().getSobrenome());
-				campoCPF.setText(getListaContas().get(table.getSelectedRow()).getDono().getCpf());
+				campoNome.setText(Controller.tableModel.getContaByNumero(Integer.parseInt(table.getValueAt(table.getSelectedRow(), 0).toString())).getDono().getNome() + " " + Controller.tableModel.getContaByNumero(Integer.parseInt(table.getValueAt(table.getSelectedRow(), 0).toString())).getDono().getSobrenome());
+				campoCPF.setText(Controller.tableModel.getContaByNumero(Integer.parseInt(table.getValueAt(table.getSelectedRow(), 0).toString())).getDono().getCpf());
 				
 				String tipoConta = getListaContas().get(table.getSelectedRow()).getDono().getTipoConta();
 				labelTipoDeConta.setText("Tipo de conta: " + tipoConta);
