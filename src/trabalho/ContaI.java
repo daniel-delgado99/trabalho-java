@@ -5,7 +5,7 @@ public interface ContaI {
 	public boolean saca (double valor);
 	public Cliente getDono();
 	public int getNumero();
-	public double getSaldo()
-	;public void remunera();
+	public double getSaldo();
+	public void remunera();
 
 }
