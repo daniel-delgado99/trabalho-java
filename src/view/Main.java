@@ -1,18 +1,20 @@
-package trabalho;
+package view;
 
 import java.awt.EventQueue;
 
-public class Controller {
+import model.TableModel;
+
+public class Main {
 	static TelaManterCliente telaClientes;
 	static TelaVincularConta telaContas;
 	static TelaManipularConta telaManipularConta;
-	static TableClienteModel tableModel;
+	public static TableModel tableModel;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					tableModel = new TableClienteModel();
+					tableModel = new TableModel();
 					openTelaClientes();
 				} catch (Exception e) {
 					e.printStackTrace();

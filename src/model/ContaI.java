@@ -1,4 +1,4 @@
-package trabalho;
+package model;
 
 public interface ContaI {
 	public boolean deposita (double valor);

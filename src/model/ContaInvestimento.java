@@ -1,8 +1,12 @@
-package trabalho;
+package model;
 
 public class ContaInvestimento extends Conta {
 	private double montanteMinimo;
 	private double depositoMinimo;
+	
+	public ContaInvestimento() {
+		super();
+	}
 	
 	public ContaInvestimento(int numeroConta, double montanteMinimo, double depositoMinimo, double depositoInicial, Cliente donoConta) {
 		super(numeroConta, depositoInicial, donoConta);
@@ -25,12 +29,12 @@ public class ContaInvestimento extends Conta {
 	
 	public boolean saca (double valor) {
 		if (valor > 0) {
-			double saldoAtual = this.getSaldoConta();
+			double saldoAtual = this.getSaldo();
 			if (valor > saldoAtual || saldoAtual-valor < this.getMontanteMinimo()) {
 				return false;
 			} else {
 				saldoAtual -= valor;
-				this.setSaldoConta((saldoAtual));
+				this.setSaldo((saldoAtual));
 				return true;
 			}
 		} else {
@@ -41,9 +45,9 @@ public class ContaInvestimento extends Conta {
 	@Override
 	public boolean deposita (double valor) {
 		if (valor >= this.getDepositoMinimo()) {
-			double saldoAtual = this.getSaldoConta();
+			double saldoAtual = this.getSaldo();
 			saldoAtual += valor;
-			this.setSaldoConta((saldoAtual));
+			this.setSaldo((saldoAtual));
 			return true;
 		} else {
 			return false;
@@ -51,6 +55,6 @@ public class ContaInvestimento extends Conta {
 	}
 	
 	public void remunera() {
-		this.setSaldoConta(this.getSaldo() * 1.02);
+		this.setSaldo(this.getSaldo() * 1.02);
 	}
 }

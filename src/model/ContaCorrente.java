@@ -1,7 +1,11 @@
-package trabalho;
+package model;
 
 public class ContaCorrente extends Conta {
 	private double limite;
+	
+	public ContaCorrente() {
+		super();
+	}
 	
 	public ContaCorrente(int numeroConta, double depositoInicial, double limite, Cliente donoConta) {
 		super(numeroConta, depositoInicial, donoConta);
@@ -17,12 +21,12 @@ public class ContaCorrente extends Conta {
 	
 	public boolean saca (double valor) {
 		if (valor > 0) {
-			double saldoAtual = this.getSaldoConta();
+			double saldoAtual = this.getSaldo();
 			if (saldoAtual-valor < this.getLimite()*(-1)) {
 				return false;
 			} else {
 				saldoAtual -= valor;
-				this.setSaldoConta((saldoAtual));
+				this.setSaldo((saldoAtual));
 				return true;
 			}
 		} else {
@@ -31,6 +35,6 @@ public class ContaCorrente extends Conta {
 	}
 	
 	public void remunera() {
-		this.setSaldoConta(this.getSaldo() * 1.01);
+		this.setSaldo(this.getSaldo() * 1.01);
 	}
 }

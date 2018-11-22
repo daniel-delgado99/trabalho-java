@@ -1,8 +1,15 @@
-package trabalho;
+package view;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import model.Cliente;
+import model.Conta;
+import model.ContaCorrente;
+import model.ContaInvestimento;
+
+import java.util.List;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
 import javax.swing.JLabel;
@@ -11,10 +18,11 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
+
+import controller.Controller;
 
 
 public class TelaVincularConta extends JFrame {
@@ -35,18 +43,6 @@ public class TelaVincularConta extends JFrame {
 	private Object[][] comboOptions = new Object[][] { {"Conta Corrente", "Conta Investimento"}, {1, 2} };
 	private JButton buttonIrParaClientes;
 	private JButton buttonIrParaAcoes;
-	
-	public ArrayList<Cliente> getListaClientes() {
-		return Controller.tableModel.getListaClientes();
-	}
-	
-	public Cliente getCliente(int i) {
-		return Controller.tableModel.getCliente(i);
-	}
-	
-	public ArrayList<Conta> getListaContas() {
-		return Controller.tableModel.getListaContas();
-	}
 	
 	public boolean validaContaInvestimento(double depositoMinimo, double montanteMinimo, double depositoInicial) {
 		if (depositoMinimo > 0 && montanteMinimo > 0 && depositoInicial > 0) {
@@ -88,19 +84,20 @@ public class TelaVincularConta extends JFrame {
 	}
 	
 	public void renderTable() {
-		Object[][] dados = new Object[this.getListaClientes().size()][3];
-		for (int i=0; i < this.getListaClientes().size(); i++) {
-			dados[i][0] = (int)    this.getListaClientes().get(i).getId();
-			dados[i][1] = (String) this.getListaClientes().get(i).getNome() + " " + this.getListaClientes().get(i).getSobrenome();
-			dados[i][2] = (String) this.getListaClientes().get(i).getCpf();
+		List<Cliente> clientes = Controller.getListaClientes();
+		Object[][] dados = new Object[clientes.size()][3];
+		for (int i=0; i < clientes.size(); i++) {
+			dados[i][0] = (int)    clientes.get(i).getId();
+			dados[i][1] = (String) clientes.get(i).getNome() + " " + clientes.get(i).getSobrenome();
+			dados[i][2] = (String) clientes.get(i).getCpf();
 				
 			for (int j=0; j<3; j++) {
-				Controller.tableModel.isCellEditable(i, j);
-				Controller.tableModel.getColumnClass(j);
+				Main.tableModel.isCellEditable(i, j);
+				Main.tableModel.getColumnClass(j);
 			}
 		}
 		
-		table.setModel(new javax.swing.table.DefaultTableModel(dados, Controller.tableModel.getColunasUneditable()));
+		table.setModel(new javax.swing.table.DefaultTableModel(dados, Main.tableModel.getColunasUneditable()));
 		table.setAutoCreateRowSorter(true);
 		table.getTableHeader().setReorderingAllowed(false);
 		
@@ -120,11 +117,12 @@ public class TelaVincularConta extends JFrame {
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				campoNome.setText(Controller.tableModel.getClienteById(Integer.parseInt(table.getValueAt(table.getSelectedRow(), 0).toString())).getNome() + " " + Controller.tableModel.getClienteById(Integer.parseInt(table.getValueAt(table.getSelectedRow(), 0).toString())).getSobrenome());
-				campoCPF.setText(Controller.tableModel.getClienteById(Integer.parseInt(table.getValueAt(table.getSelectedRow(), 0).toString())).getCpf());
+				Cliente c = Controller.getClienteById(Integer.parseInt(table.getValueAt(table.getSelectedRow(), 0).toString()));
+				campoNome.setText(c.getNome() + " " + c.getSobrenome());
+				campoCPF.setText(c.getCpf());
 			}
 		});
-		table.setModel(Controller.tableModel);
+		table.setModel(Main.tableModel);
 		
 		renderTable();	
 
@@ -175,14 +173,14 @@ public class TelaVincularConta extends JFrame {
 				int linha = table.getSelectedRow();
 				
 				if (linha > -1) {
-					Cliente cliente = getCliente(linha);
+					Cliente cliente = Controller.getClienteById((int)table.getValueAt(linha, 0));
 					if (cliente.getConta() == null) {
 						if (comboOptions[1][comboBox.getSelectedIndex()] == (Object) 1) {
 							int numeroConta;
-							if (Controller.tableModel.getListaContas().size() == 0) {
+							if (Controller.getListaContas().size() == 0) {
 								numeroConta=0;
 							} else {
-								numeroConta = Controller.tableModel.getListaContas().get(getListaContas().size()-1).getNumero() + 1;
+								numeroConta = Controller.getListaContas().get(Controller.getListaContas().size()-1).getNumero() + 1;
 							}
 							double depositoInicial, limite;						
 							depositoInicial = converteValor(campo1.getText());
@@ -190,8 +188,9 @@ public class TelaVincularConta extends JFrame {
 							
 							if (validaContaCorrente(depositoInicial, limite)) {
 								Conta conta = new ContaCorrente(numeroConta, depositoInicial, limite, cliente);
-								Controller.tableModel.addConta(conta);
-								Controller.tableModel.relacionarClienteConta(cliente, conta);
+								conta.setTipo("Conta corrente");
+								Controller.addConta(conta);
+								Controller.relacionarClienteConta(cliente, conta);
 								
 								campoNome.setText("");
 								campoCPF.setText("");
@@ -206,10 +205,10 @@ public class TelaVincularConta extends JFrame {
 						} else if (comboOptions[1][comboBox.getSelectedIndex()] == (Object) 2) {
 							double depositoInicial, montanteMinimo, depositoMinimo;
 							int numeroConta;
-							if (Controller.tableModel.getListaContas().size() == 0) {
+							if (Controller.getListaContas().size() == 0) {
 								numeroConta=0;
 							} else {
-								numeroConta = Controller.tableModel.getListaContas().get(getListaContas().size()-1).getNumero() + 1;
+								numeroConta = Controller.getListaContas().get(Controller.getListaContas().size()-1).getNumero() + 1;
 							}
 							montanteMinimo = converteValor(campo1.getText());
 							depositoMinimo = converteValor(campo2.getText());
@@ -218,8 +217,9 @@ public class TelaVincularConta extends JFrame {
 							
 							if (validaContaInvestimento(depositoMinimo, montanteMinimo, depositoInicial)) {
 								Conta conta = new ContaInvestimento(numeroConta, montanteMinimo, depositoMinimo, depositoInicial, cliente);
-								Controller.tableModel.addConta(conta);
-								Controller.tableModel.relacionarClienteConta(cliente, conta);
+								conta.setTipo("Conta investimento");
+								Controller.addConta(conta);
+								Controller.relacionarClienteConta(cliente, conta);
 								campoNome.setText("");
 								campoCPF.setText("");
 								campo1.setText("");
@@ -320,8 +320,8 @@ public class TelaVincularConta extends JFrame {
 		buttonIrParaClientes.setBounds(10, 387, 165, 23);
 		buttonIrParaClientes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Controller.closeTelaContas();
-				Controller.openTelaClientes();
+				Main.closeTelaContas();
+				Main.openTelaClientes();
 			}
 		});
 		contentPane.add(buttonIrParaClientes);
@@ -329,8 +329,8 @@ public class TelaVincularConta extends JFrame {
 		buttonIrParaAcoes = new JButton("Ir para acoes");
 		buttonIrParaAcoes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Controller.closeTelaContas();
-				Controller.openTelaManipularConta();
+				Main.closeTelaContas();
+				Main.openTelaManipularConta();
 			}
 		});
 		buttonIrParaAcoes.setBounds(409, 387, 165, 23);

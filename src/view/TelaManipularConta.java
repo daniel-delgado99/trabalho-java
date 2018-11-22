@@ -1,8 +1,13 @@
-package trabalho;
+package view;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import model.Conta;
+import model.ContaCorrente;
+import model.ContaInvestimento;
+
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
 import javax.swing.JLabel;
@@ -11,9 +16,11 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
+import java.util.List;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+
+import controller.Controller;
 
 public class TelaManipularConta extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -35,18 +42,6 @@ public class TelaManipularConta extends JFrame {
 	private JButton buttonIrParaClientes;
 	private JButton buttonIrParaContas;
 	
-	public ArrayList<Cliente> getListaClientes() {
-		return Controller.tableModel.getListaClientes();
-	}
-	
-	public Cliente getCliente(int i) {
-		return Controller.tableModel.getCliente(i);
-	}
-	
-	public ArrayList<Conta> getListaContas() {
-		return Controller.tableModel.getListaContas();
-	}
-	
 	public double converteValor (String texto) {
 		double valor;
 		try {
@@ -59,18 +54,19 @@ public class TelaManipularConta extends JFrame {
 	}
 	
 	public void renderTable() {
-		Object[][] dados = new Object[this.getListaContas().size()][3];
-		for (int i=0; i < this.getListaContas().size(); i++) {
-			dados[i][0] = (int)    this.getListaContas().get(i).getNumero();
-			dados[i][1] = (String) this.getListaContas().get(i).getDono().getNome() + " " + this.getListaContas().get(i).getDono().getSobrenome();
-			dados[i][2] = (String) this.getListaContas().get(i).getDono().getCpf();
+		List<Conta> contas = Controller.getListaContas();
+		Object[][] dados = new Object[contas.size()][3];
+		for (int i=0; i < contas.size(); i++) {
+			dados[i][0] = (int)    contas.get(i).getNumero();
+			dados[i][1] = (String) contas.get(i).getDono().getNome() + " " + contas.get(i).getDono().getSobrenome();
+			dados[i][2] = (String) contas.get(i).getDono().getCpf();
 				
 			for (int j=0; j<3; j++) {
-				Controller.tableModel.isCellEditable(i, j);
+				Main.tableModel.isCellEditable(i, j);
 			}
 		}
 		
-		table.setModel(new javax.swing.table.DefaultTableModel(dados, Controller.tableModel.getColunasUneditable()));
+		table.setModel(new javax.swing.table.DefaultTableModel(dados, Main.tableModel.getColunasUneditable()));
 		table.setAutoCreateRowSorter(true);
 		table.getTableHeader().setReorderingAllowed(false);
 		
@@ -91,25 +87,26 @@ public class TelaManipularConta extends JFrame {
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				campoNome.setText(Controller.tableModel.getContaByNumero(Integer.parseInt(table.getValueAt(table.getSelectedRow(), 0).toString())).getDono().getNome() + " " + Controller.tableModel.getContaByNumero(Integer.parseInt(table.getValueAt(table.getSelectedRow(), 0).toString())).getDono().getSobrenome());
-				campoCPF.setText(Controller.tableModel.getContaByNumero(Integer.parseInt(table.getValueAt(table.getSelectedRow(), 0).toString())).getDono().getCpf());
+				String tipoConta = Controller.getListaContas().get(table.getSelectedRow()).getDono().getTipoConta();
+				Conta conta = Controller.getContaByNumero(Integer.parseInt(table.getValueAt(table.getSelectedRow(), 0).toString()), tipoConta);
+				campoNome.setText(conta.getDono().getNome());
+				campoCPF.setText(conta.getDono().getCpf());
 				
-				String tipoConta = getListaContas().get(table.getSelectedRow()).getDono().getTipoConta();
 				labelTipoDeConta.setText("Tipo de conta: " + tipoConta);
-				lblSaldo.setText("Saldo: " + getListaContas().get(table.getSelectedRow()).getSaldo());
-				labelNumeroConta.setText("Numero da conta: " + getListaContas().get(table.getSelectedRow()).getNumero());
+				lblSaldo.setText("Saldo: " + conta.getSaldo());
+				labelNumeroConta.setText("Numero da conta: " + conta.getNumero());
 				
 				if (tipoConta == "Conta corrente") {
 					label2.setVisible(false);
-					label1.setText("Limite: " + ((ContaCorrente) getListaContas().get(table.getSelectedRow())).getLimite());
+					label1.setText("Limite: " + ((ContaCorrente) conta).getLimite());
 				} else if (tipoConta == "Conta investimento") {
 					label2.setVisible(true);
-					label1.setText("Montante minimo: " + ((ContaInvestimento) getListaContas().get(table.getSelectedRow())).getMontanteMinimo());
-					label2.setText("Deposito minimo: " + ((ContaInvestimento) getListaContas().get(table.getSelectedRow())).getDepositoMinimo());
+					label1.setText("Montante minimo: " + ((ContaInvestimento) conta).getMontanteMinimo());
+					label2.setText("Deposito minimo: " + ((ContaInvestimento) conta).getDepositoMinimo());
 				}
 			}
 		});
-		table.setModel(Controller.tableModel);
+		table.setModel(Main.tableModel);
 		
 		renderTable();	
 
@@ -206,8 +203,10 @@ public class TelaManipularConta extends JFrame {
 				double valor = converteValor(campoSaque.getText());
 				if (table.getSelectedRow() > -1) {
 					if (valor > 0) {
-						if (getListaContas().get(table.getSelectedRow()).saca(valor)) {
-							lblSaldo.setText("Saldo: " + getListaContas().get(table.getSelectedRow()).getSaldo());
+						Conta contaSelecionada = Controller.getListaContas().get(table.getSelectedRow());
+						if (contaSelecionada.saca(valor)) {
+							Controller.setConta(contaSelecionada);
+							lblSaldo.setText("Saldo: " + Controller.getListaContas().get(table.getSelectedRow()).getSaldo());
 							JOptionPane.showMessageDialog (contentPane, "Saque realizado");
 							campoSaque.setText("");
 						} else {
@@ -230,8 +229,10 @@ public class TelaManipularConta extends JFrame {
 				double valor = converteValor(campoDeposito.getText());
 				if (table.getSelectedRow() > -1) {
 					if (valor > 0) {
-						if (getListaContas().get(table.getSelectedRow()).deposita(valor)) {
-							lblSaldo.setText("Saldo: " + getListaContas().get(table.getSelectedRow()).getSaldo());
+						Conta contaSelecionada = Controller.getListaContas().get(table.getSelectedRow());
+						if (contaSelecionada.deposita(valor)) {
+							Controller.setConta(contaSelecionada);
+							lblSaldo.setText("Saldo: " + contaSelecionada.getSaldo());
 							JOptionPane.showMessageDialog (contentPane, "Deposito realizado");
 							campoDeposito.setText("");
 						} else {
@@ -252,10 +253,12 @@ public class TelaManipularConta extends JFrame {
 		btnRemunera.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (table.getSelectedRow() > -1) {
-					if (getListaContas().get(table.getSelectedRow()).getSaldo() > 0) {
-						getListaContas().get(table.getSelectedRow()).remunera();
+					Conta contaSelecionada = Controller.getListaContas().get(table.getSelectedRow());
+					if (contaSelecionada.getSaldo() > 0) {
+						contaSelecionada.remunera();
+						Controller.setConta(contaSelecionada);
 						JOptionPane.showMessageDialog (contentPane, "Remunerado!");
-						lblSaldo.setText("Saldo: " + getListaContas().get(table.getSelectedRow()).getSaldo());
+						lblSaldo.setText("Saldo: " + contaSelecionada.getSaldo());
 						contentPane.repaint();
 					} else {
 					    JOptionPane.showMessageDialog (contentPane, "Saldo negativo, não é possível remunerar");
@@ -276,8 +279,8 @@ public class TelaManipularConta extends JFrame {
 		buttonIrParaClientes = new JButton("Ir para clientes");
 		buttonIrParaClientes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Controller.closeTelaManipularConta();
-				Controller.openTelaClientes();
+				Main.closeTelaManipularConta();
+				Main.openTelaClientes();
 			}
 		});
 		buttonIrParaClientes.setBounds(20, 387, 170, 23);
@@ -286,8 +289,8 @@ public class TelaManipularConta extends JFrame {
 		buttonIrParaContas = new JButton("Ir para contas");
 		buttonIrParaContas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Controller.closeTelaManipularConta();
-				Controller.openTelaContas();
+				Main.closeTelaManipularConta();
+				Main.openTelaContas();
 			}
 		});
 		buttonIrParaContas.setBounds(396, 387, 170, 23);

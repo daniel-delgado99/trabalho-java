@@ -1,4 +1,4 @@
-package trabalho;
+package view;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -9,9 +9,12 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JButton;
-import java.util.ArrayList;
 import java.awt.event.ActionListener;
+import java.util.List;
 import java.awt.event.ActionEvent;
+
+import controller.Controller;
+import model.Cliente;
 
 
 public class TelaManterCliente extends JFrame {
@@ -31,30 +34,28 @@ public class TelaManterCliente extends JFrame {
 	private JTextField campoSalario;
 	private JButton buttonIrParaAcoes;
 	private JButton buttonIrParaContas;
-	
-	public ArrayList<Cliente> getListaClientes() {
-		return Controller.tableModel.getListaClientes();
-	}
+
 	
 	public void renderTable() {
-		Object[][] dados = new Object[this.getListaClientes().size()][7];
+		List<Cliente> clientes = Controller.getListaClientes();
+		Object[][] dados = new Object[Controller.getListaClientes().size()][7];
 		
-		for (int i=0; i < this.getListaClientes().size(); i++) {
-			dados[i][0] = (int)    this.getListaClientes().get(i).getId();
-			dados[i][1] = (String) this.getListaClientes().get(i).getNome();
-			dados[i][2] = (String) this.getListaClientes().get(i).getSobrenome();
-			dados[i][3] = (String) this.getListaClientes().get(i).getRg();
-			dados[i][4] = (String) this.getListaClientes().get(i).getCpf();
-			dados[i][5] = (String) this.getListaClientes().get(i).getEndereco();
-			dados[i][6] = (double) this.getListaClientes().get(i).getSalario();//String.valueOf(this.tableModel.getListaClientes().get(i).getSalario());
+		for (int i=0; i < clientes.size(); i++) {
+			dados[i][0] = (int)    clientes.get(i).getId();
+			dados[i][1] = (String) clientes.get(i).getNome();
+			dados[i][2] = (String) clientes.get(i).getSobrenome();
+			dados[i][3] = (String) clientes.get(i).getRg();
+			dados[i][4] = (String) clientes.get(i).getCpf();
+			dados[i][5] = (String) clientes.get(i).getEndereco();
+			dados[i][6] = (double) clientes.get(i).getSalario();//String.valueOf(this.tableModel.getListaClientes().get(i).getSalario());
 				
 			for (int j=0; j<7; j++) {
-				Controller.tableModel.isCellEditable(i, j);
-				Controller.tableModel.getColumnClass(j);
+				Main.tableModel.isCellEditable(i, j);
+				Main.tableModel.getColumnClass(j);
 			}
 		}
 		
-		table.setModel(new javax.swing.table.DefaultTableModel(dados, Controller.tableModel.getColunasEditable()));
+		table.setModel(new javax.swing.table.DefaultTableModel(dados, Main.tableModel.getColunasEditable()));
 		table.setAutoCreateRowSorter(true);
 		table.getTableHeader().setReorderingAllowed(false);
 		
@@ -98,7 +99,7 @@ public class TelaManterCliente extends JFrame {
 			  }
 			}
 		};
-		table.setModel(Controller.tableModel);
+		table.setModel(Main.tableModel);
 		
 		renderTable();	
 
@@ -179,10 +180,10 @@ public class TelaManterCliente extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent ev) {
 				int id;
-				if (getListaClientes().size() == 0) {
+				if (Controller.getListaClientes().size() == 0) {
 					id = 0;
 				} else {
-					id = getListaClientes().get(getListaClientes().size()-1).getId() + 1;
+					id = Controller.getListaClientes().get(Controller.getListaClientes().size()-1).getId() + 1;
 				}
 				String nome = campoNome.getText();
 				String sobrenome = campoSobrenome.getText();
@@ -205,7 +206,7 @@ public class TelaManterCliente extends JFrame {
 					}
 					else {
 						Cliente cliente = new Cliente(id, nome, sobrenome, rg, cpf, endereco, salario);
-						Controller.tableModel.addCliente(cliente);
+						Controller.addCliente(cliente);
 						
 						renderTable();
 						JOptionPane.showMessageDialog (contentPane, "Ciente adicionado!");
@@ -230,7 +231,7 @@ public class TelaManterCliente extends JFrame {
 		JButton buttonSalvarAlteracoes = new JButton("Salvar alteracoes");
 		buttonSalvarAlteracoes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ev) {
-				int numLinhas = Controller.tableModel.getListaClientes().size();
+				int numLinhas = Controller.getListaClientes().size();
 				String nome, sobrenome, rg, cpf, endereco, salarioS;
 				double salario;
 				int id;
@@ -267,16 +268,16 @@ public class TelaManterCliente extends JFrame {
 						
 						salario = validaSalario(salarioS);
 						
-						Cliente c = Controller.tableModel.getClienteById(id);
+						Cliente c = Controller.getClienteById(id);
 						c.setNome(nome);
 						c.setSobrenome(sobrenome);
 						c.setRg(rg);
 						c.setCpf(cpf);
 						c.setEndereco(endereco);
 						c.setSalario(salario);
-						Controller.tableModel.setCliente(i, c);
+						Controller.setCliente(c);
 						if (c.getConta() != null) {
-							c.getConta().setDonoConta(c);
+							c.getConta().setDono(c);
 							c.getConta().getDono();
 						}
 					}
@@ -299,7 +300,7 @@ public class TelaManterCliente extends JFrame {
                                 if (linha > -1) {
 					int dialogResult = JOptionPane.showConfirmDialog (contentPane, "Deseja realmente excluir o cliente?\nIsso apagara o cliente e sua conta","Aviso!", 0);
 					if (dialogResult == 0) {
-						Controller.tableModel.removeCliente(linha);
+						Controller.removeCliente(linha);
 						renderTable();
 						JOptionPane.showMessageDialog (contentPane, "Cliente removido");
 					}
@@ -314,8 +315,8 @@ public class TelaManterCliente extends JFrame {
 		buttonIrParaContas = new JButton("Ir para acoes");
 		buttonIrParaContas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Controller.closeTelaClientes();
-				Controller.openTelaManipularConta();
+				Main.closeTelaClientes();
+				Main.openTelaManipularConta();
 			}
 		});
 		buttonIrParaContas.setBounds(420, 387, 160, 23);
@@ -324,8 +325,8 @@ public class TelaManterCliente extends JFrame {
 		buttonIrParaAcoes = new JButton("Ir para contas");
 		buttonIrParaAcoes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Controller.closeTelaClientes();
-				Controller.openTelaContas();
+				Main.closeTelaClientes();
+				Main.openTelaContas();
 			}
 		});
 		buttonIrParaAcoes.setBounds(20, 387, 160, 23);

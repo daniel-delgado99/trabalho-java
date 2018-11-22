@@ -1,4 +1,4 @@
-package trabalho;
+package model;
 
 public class Cliente {
 	private int id;
@@ -9,6 +9,8 @@ public class Cliente {
 	private String endereco;
 	private double salario;
 	private Conta conta;
+	
+	public Cliente() {}
 	
 	public Cliente(int id, String nome, String sobrenome, String rg, String cpf, String endereco, double salario) {
 		super();
@@ -72,12 +74,7 @@ public class Cliente {
 		return this.conta;
 	}
 	public String getTipoConta() {
-		if (this.getConta().getClass().getName() == "trabalho.ContaCorrente")
-			return "Conta corrente";
-		else if(this.getConta().getClass().getName() == "trabalho.ContaInvestimento")
-			return "Conta investimento";
-		else
-			return "Não possui conta";
+		return this.getConta().getTipo();
 	}
 	public void setConta(Conta conta) {
 		this.conta = conta;
