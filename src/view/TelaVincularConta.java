@@ -23,6 +23,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
 
 import controller.Controller;
+import controller.Main;
 
 
 public class TelaVincularConta extends JFrame {

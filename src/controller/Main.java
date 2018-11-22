@@ -1,8 +1,11 @@
-package view;
+package controller;
 
 import java.awt.EventQueue;
 
 import model.TableModel;
+import view.TelaManipularConta;
+import view.TelaManterCliente;
+import view.TelaVincularConta;
 
 public class Main {
 	static TelaManterCliente telaClientes;
